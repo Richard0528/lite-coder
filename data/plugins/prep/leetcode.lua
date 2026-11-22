@@ -14,19 +14,22 @@ local function dirname(path)
   return path:match("(.+)[/\\][^/\\]+$") or "."
 end
 
-local function open_url(url)
-  if PLATFORM == "Mac OS X" then
-    system.exec("open '" .. url .. "'")
-  else
-    system.exec("xdg-open '" .. url .. "'")
-  end
-end
-
 local function output_line(text, kind)
   if state.output then
     state.output:add(text, kind or "meta")
   end
   util.log("%s", text)
+end
+
+---The newest progress line, shown on the status bar while a sync is running.
+local function note_progress(text)
+  for line in (tostring(text or "") .. "\n"):gmatch("(.-)\n") do
+    line = line:gsub("^%s+", ""):gsub("%s+$", "")
+    if line ~= "" then
+      state.sync_status = util.clip(line, 96)
+      core.redraw = true
+    end
+  end
 end
 
 function leetcode.parse_cookie(cookie)
@@ -40,7 +43,7 @@ function leetcode.verify(cookie, on_done)
   local session_id, csrf = leetcode.parse_cookie(cookie)
   if not session_id or session_id == "" then
     core.error("Cookie is missing LEETCODE_SESSION.")
-    leetcode.login(on_done)
+    if on_done then on_done(false) end
     return
   end
   core.add_thread(function()
@@ -69,7 +72,7 @@ function leetcode.verify(cookie, on_done)
     local user = ok and data and data.data and data.data.userStatus
     if not user or not user.isSignedIn or not user.username or user.username == "" then
       core.error("LeetCode did not accept that cookie.")
-      leetcode.login(on_done)
+      if on_done then on_done(false) end
       return
     end
     secrets.update({ leetcode_cookie = cookie, leetcode_user = user.username })
@@ -82,7 +85,7 @@ end
 
 local logging_in = false
 
-function leetcode.capture()
+function leetcode.capture(on_done)
   if logging_in then
     core.error("A LeetCode login is already in progress.")
     return
@@ -136,38 +139,14 @@ function leetcode.capture()
     if cookie and cookie ~= "" then
       leetcode.verify(cookie, function(ok)
         if ok then core.status_view:show_message("i", require("core.style").text, "LeetCode cookie saved") end
+        if on_done then on_done(ok) end
       end)
     else
       core.error("LeetCode login was not captured.")
       core.redraw = true
+      if on_done then on_done(false) end
     end
   end)
-end
-
-function leetcode.login(on_done)
-  core.nag_view:show(
-    "LeetCode login required",
-    "Log in in the browser, then paste the whole Cookie header from a leetcode.com request.\nDevTools, Network tab, Request Headers, Cookie. Keep cf_clearance in it.\nIf LeetCode still refuses, set config.plugins.prep.user_agent to your browser's User-Agent.\n",
-    {
-      { text = "Log in", default_yes = true },
-      { text = "Cancel", default_no = true },
-    },
-    function(item)
-      if not item or item.text ~= "Log in" then
-        if on_done then on_done(false) end
-        return
-      end
-      open_url("https://leetcode.com/accounts/login/")
-      core.command_view:enter("Paste LeetCode Cookie", {
-        submit = function(text)
-          leetcode.verify(text or "", on_done)
-        end,
-        cancel = function()
-          if on_done then on_done(false) end
-        end,
-      })
-    end
-  )
 end
 
 function leetcode.logout()
@@ -188,7 +167,7 @@ local function run_sync(on_done)
   local cookie = secrets.leetcode_cookie()
   local out_dir = util.join(util.prep_dir(), "bank")
   util.ensure_dir(out_dir)
-  local argv = { python, script, "--resume", "--out", out_dir }
+  local argv = { python, "-u", script, "--resume", "--out", out_dir }
   -- The cookie goes over stdin so it never sits in a file or an argument list.
   if cookie and cookie ~= "" then argv[#argv + 1] = "--cookie-stdin" end
   if state.output then
@@ -198,14 +177,20 @@ local function run_sync(on_done)
   local session = require "plugins.prep.session"
   session.show("Output")
   output_line("Syncing questions...")
+  note_progress("Syncing questions...")
   local proc, err = process.start(argv, {
     cwd = dirname(script),
-    env = util.runtime_env({ python }, { LEETCODE_USER_AGENT = util.user_agent() }),
+    env = util.runtime_env({ python }, {
+      LEETCODE_USER_AGENT = util.user_agent(),
+      PYTHONUNBUFFERED = "1",
+    }),
     stdin = process.REDIRECT_PIPE,
     stdout = process.REDIRECT_PIPE,
     stderr = process.REDIRECT_PIPE,
   })
   if not proc then
+    state.sync_status = nil
+    core.redraw = true
     core.error("Could not start the fetch script: %s", tostring(err))
     if on_done then on_done(1) end
     return
@@ -216,11 +201,24 @@ local function run_sync(on_done)
   proc.stdin:close()
   core.add_thread(function()
     util.stream_process(proc, {
-      on_out = function(text) if state.output then state.output:add(text, "out") end end,
-      on_err = function(text) if state.output then state.output:add(text, "err") end end,
+      on_out = function(text)
+        if state.output then state.output:add(text, "out") end
+        note_progress(text)
+      end,
+      on_err = function(text)
+        if state.output then state.output:add(text, "err") end
+        note_progress(text)
+      end,
     })
     local code = proc:returncode() or 0
-    output_line("Sync finished (" .. tostring(code) .. ").")
+    local summary = state.sync_status
+    state.sync_status = nil
+    core.redraw = true
+    if not (code == 0 and summary and summary:find("^Done%.", 1)) then
+      summary = "Sync finished (" .. tostring(code) .. ")."
+      output_line(summary)
+    end
+    core.status_view:show_message("i", require("core.style").text, summary or "Sync finished.")
     bank.reload()
     if state.sidebar then state.sidebar:refresh() end
     if on_done then on_done(code) end
@@ -236,7 +234,7 @@ function leetcode.sync()
   run_sync(function(code)
     syncing = false
     if code == 3 then
-      leetcode.login(function(ok)
+      leetcode.capture(function(ok)
         if ok then leetcode.sync() end
       end)
     end

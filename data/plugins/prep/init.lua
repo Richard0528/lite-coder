@@ -138,7 +138,6 @@ command.add(nil, {
   end,
   ["prep:sync-questions"] = function() leetcode.sync() end,
   ["prep:leetcode-login"] = function() leetcode.capture() end,
-  ["prep:leetcode-paste"] = function() leetcode.login() end,
   ["prep:leetcode-logout"] = function() leetcode.logout() end,
   ["prep:toggle-language"] = function() runner.toggle_language() end,
   ["prep:stop"] = function() runner.stop() end,
@@ -212,6 +211,9 @@ core.status_view:add_item({
   alignment = StatusView.Item.LEFT,
   position = 1,
   get_item = function()
+    if state.sync_status and state.sync_status ~= "" then
+      return { style.text, state.sync_status }
+    end
     if state.leetcode_busy then
       return { style.text, "Menu  signing in" }
     end
@@ -226,7 +228,6 @@ core.status_view:add_item({
     local menu = core.root_view.context_menu
     local items = {
       { text = "Log in to LeetCode", command = "prep:leetcode-login" },
-      { text = "Paste a LeetCode cookie", command = "prep:leetcode-paste" },
       { text = "Sync questions", command = "prep:sync-questions" },
     }
     if state.leetcode_user and state.leetcode_user ~= "" then

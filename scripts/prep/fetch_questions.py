@@ -36,6 +36,13 @@ DEFAULT_UA = (
 def user_agent():
     # Cloudflare ties its clearance cookie to the browser that earned it.
     return os.environ.get("LEETCODE_USER_AGENT", "").strip() or DEFAULT_UA
+
+
+def status(message):
+    """Progress the app can show immediately. A pipe would otherwise buffer it."""
+    print(message, flush=True)
+
+
 DETAIL_QUERY = """
 query getQuestionDetail($titleSlug: String!) {
   question(titleSlug: $titleSlug) {
@@ -160,6 +167,7 @@ def request_json(url, data=None, referer=None, retries=4, timeout=40):
             raise
         except Exception as exc:
             last = exc
+            status("Request failed (%s). Retrying in %.0fs." % (exc, delay))
             time.sleep(delay)
             delay = min(delay * 2, 20)
     raise RuntimeError(str(last))
@@ -359,20 +367,29 @@ def coding_record(problem, detail):
 
 
 def fetch_leetcode(bank, per_difficulty, throttle, resume):
-    print("Fetching LeetCode problem list...")
+    status("Fetching the LeetCode problem list...")
     selected = select_problems(fetch_problem_list(), per_difficulty)
-    print("Selected %d problems." % len(selected))
+    counts = {level: 0 for level in ("Easy", "Medium", "Hard")}
+    for problem in selected:
+        counts[problem["difficulty"]] = counts.get(problem["difficulty"], 0) + 1
+    status(
+        "Selected %d problems (%d easy, %d medium, %d hard)."
+        % (len(selected), counts["Easy"], counts["Medium"], counts["Hard"])
+    )
     cache_dir = bank / ".cache"
     records = []
+    total = len(selected)
     for index, problem in enumerate(selected, 1):
+        title = "%s. %s" % (problem["frontend_id"], problem["title"])
         dest = bank / "coding" / ("%s.json" % problem["slug"])
         if resume and dest.exists():
             records.append(json.loads(dest.read_text(encoding="utf-8")))
-            print("[%d/%d] %s (cached)" % (index, len(selected), problem["slug"]))
+            status("[%d/%d] %s  cached" % (index, total, title))
             continue
-        print("[%d/%d] %s" % (index, len(selected), problem["slug"]))
+        status("[%d/%d] %s  %s" % (index, total, title, problem["difficulty"]))
         detail = fetch_detail(problem, cache_dir, throttle)
         records.append(coding_record(problem, detail))
+    status("Fetched %d coding problems." % len(records))
     return records
 
 
@@ -382,7 +399,7 @@ def fetch_text(url):
     except AuthRequired:
         raise
     except Exception as exc:
-        print("Skip %s (%s)" % (url, exc))
+        status("Skip %s (%s)" % (url, exc))
         return ""
 
 
@@ -405,7 +422,7 @@ def design_from_readmes(curated_questions):
     seen = {slugify(item.get("title") or item.get("slug") or "") for item in found}
     pattern = re.compile(r"^(?:design\b.+|how (?:would|do) you design\b.+)", re.I)
     for url in DESIGN_SOURCES:
-        print("Reading %s" % url)
+        status("Reading %s" % url)
         text = fetch_text(url)
         for line in text.splitlines():
             clean = clean_design_line(line)
@@ -433,7 +450,7 @@ def github_tree(repo):
         try:
             payload = request_json(url, timeout=60)
         except Exception as exc:
-            print("Tree %s@%s failed (%s)" % (repo, branch, exc))
+            status("Tree %s@%s failed (%s)" % (repo, branch, exc))
             continue
         if payload.get("tree"):
             return branch, payload["tree"]
@@ -484,7 +501,7 @@ def fetch_explain(limit):
             try:
                 source = request(raw_url, timeout=30)
             except Exception as exc:
-                print("Skip %s (%s)" % (path, exc))
+                status("Skip %s (%s)" % (path, exc))
                 continue
             if len(source) < 80 or len(source) > 8000:
                 continue
@@ -505,7 +522,7 @@ def fetch_explain(limit):
                 "source": raw_url,
             })
             taken += 1
-            print("Explain %s" % path)
+            status("Explain %s" % path)
             time.sleep(0.2)
     return records
 
@@ -552,7 +569,7 @@ def generate_debug(coding, count, model):
         try:
             data = extract_json(chat_json(prompt, model))
         except Exception as exc:
-            print("Debug generation skipped for %s (%s)" % (question.get("slug"), exc))
+            status("Debug generation skipped for %s (%s)" % (question.get("slug"), exc))
             continue
         records.append({
             "round": "debug",
@@ -566,7 +583,7 @@ def generate_debug(coding, count, model):
             "content_md": "The starter code is wrong. Find the bug. A failing case is listed below.\n",
             "source": "generated",
         })
-        print("Debug %s" % question["slug"])
+        status("Debug %s" % question["slug"])
     return records
 
 
@@ -647,24 +664,28 @@ def main():
     try:
         coding = [] if args.skip_leetcode else fetch_leetcode(bank, args.per_difficulty, args.throttle, args.resume)
     except AuthRequired as exc:
-        print("AUTH_REQUIRED %s" % exc)
+        status("LeetCode asked for a login: %s" % exc)
         return 3
     except Exception as exc:
-        print("LeetCode fetch failed: %s" % exc, file=sys.stderr)
+        status("LeetCode fetch failed: %s" % exc)
         return 1
 
     coding = merge_by_slug(coding, bundled.get("coding") or [])
     design = bundled.get("design") or []
     if not args.skip_design:
+        status("Collecting system-design prompts...")
         try:
             design = design_from_readmes(design)
         except AuthRequired:
-            print("AUTH_REQUIRED")
+            status("LeetCode asked for a login.")
             return 3
+        status("Collected %d system-design prompts." % len(design))
     debug = list(bundled.get("debug") or [])
     explain = list(bundled.get("explain") or [])
     if not args.skip_explain and args.explain > 0:
+        status("Collecting explain-the-code snippets...")
         explain = merge_by_slug(fetch_explain(args.explain), explain)
+        status("Collected %d explain-the-code snippets." % len(explain))
     if args.gen_debug:
         debug = merge_by_slug(generate_debug(coding, args.gen_debug, args.model), debug)
     quiz_path = curated / "quiz.json"
@@ -678,9 +699,13 @@ def main():
         "debug": write_round(bank, "debug", debug),
         "explain": write_round(bank, "explain", explain),
     }
+    status("Writing the question bank...")
     (bank / "index.json").write_text(json.dumps(index, indent=2), encoding="utf-8")
     (bank / "quiz.json").write_text(json.dumps(quiz, indent=2), encoding="utf-8")
-    print("Wrote %s" % (bank / "index.json"))
+    status(
+        "Done. %d coding, %d design, %d debug, %d explain."
+        % (len(index["coding"]), len(index["design"]), len(index["debug"]), len(index["explain"]))
+    )
     return 0
 
 

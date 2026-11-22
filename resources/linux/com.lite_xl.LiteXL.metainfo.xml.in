@@ -3,7 +3,7 @@
   <id>com.lite_xl.LiteXL</id>
   <metadata_license>MIT</metadata_license>
   <project_license>MIT</project_license>
-  <name>Lite XL</name>
+  <name>Prep</name>
   <summary>A lightweight text editor written in Lua</summary>
   <content_rating type="oars-1.0" />
   <launchable type="desktop-id">com.lite_xl.LiteXL.desktop</launchable>

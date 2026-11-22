@@ -9,6 +9,37 @@ local function blocked(doc)
   return doc.read_only and not doc._prep_write
 end
 
+local function wrapping_views(doc)
+  local found = {}
+  if not doc or not core.root_view or not core.root_view.root_node then return found end
+  for _, view in ipairs(core.get_views_referencing_doc(doc)) do
+    if view.wrapping_enabled then
+      found[#found + 1] = view
+    end
+  end
+  return found
+end
+
+-- Line wrapping tracks breaks from insert and remove. Replacing doc.lines
+-- directly, which load and set_text both do, skips that. Drop the cache
+-- around the edit, then rebuild it from the text that is left.
+local function suspend_wrap(doc)
+  local views = wrapping_views(doc)
+  for _, view in ipairs(views) do
+    view.wrapped_settings = nil
+  end
+  return views
+end
+
+local function resume_wrap(views)
+  local LineWrapping = package.loaded["plugins.linewrapping"]
+  if not LineWrapping then return end
+  for _, view in ipairs(views) do
+    view.wrapped_settings = nil
+    LineWrapping.update_docview_breaks(view)
+  end
+end
+
 local original_save = Doc.save
 function Doc:save(...)
   if self.read_only then return end
@@ -30,6 +61,7 @@ end
 function md.set_text(doc, text)
   text = text or ""
   if text:sub(-1) == "\n" then text = text:sub(1, -2) end
+  local views = suspend_wrap(doc)
   doc._prep_write = true
   local last = #doc.lines
   doc:remove(1, 1, last, #doc.lines[last])
@@ -42,6 +74,7 @@ function md.set_text(doc, text)
   end
   doc:clean()
   doc._prep_write = false
+  resume_wrap(views)
 end
 
 local NamedView = DocView:extend()
@@ -59,6 +92,7 @@ function NamedView:try_close()
 end
 
 function md.load_file(doc, path, read_only)
+  local views = suspend_wrap(doc)
   doc.read_only = false
   doc._prep_write = true
   doc:set_filename(path, path)
@@ -71,6 +105,7 @@ function md.load_file(doc, path, read_only)
   doc._prep_write = false
   doc.read_only = read_only and true or false
   doc.new_file = false
+  resume_wrap(views)
 end
 
 ---Create a document and a tab view. `path` is optional; when omitted the doc is memory-only.

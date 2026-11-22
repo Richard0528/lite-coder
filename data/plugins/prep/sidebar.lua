@@ -21,6 +21,7 @@ function Sidebar:new()
   self.round_index = 1
   self.expanded = { Easy = true, Medium = true, Hard = true }
   self.hovered_key = nil
+  self.hovered_tab = nil
   self.selected_id = nil
   self.tab_hits = {}
 end
@@ -57,6 +58,10 @@ end
 
 function Sidebar:tab_height()
   return style.font:get_height() + style.padding.y * 2
+end
+
+function Sidebar:tabs_span()
+  return self:tab_height() * #bank.rounds
 end
 
 function Sidebar:rows()
@@ -103,7 +108,7 @@ end
 function Sidebar:each_row()
   local rows = self:rows()
   local ox, oy = self:get_content_offset()
-  local y = oy + self:tab_height()
+  local y = oy + self:tabs_span()
   local h = self:item_height()
   local i = 0
   return function()
@@ -117,7 +122,7 @@ function Sidebar:each_row()
 end
 
 function Sidebar:get_scrollable_size()
-  return self:tab_height() + self:item_height() * (#self:rows() + 1)
+  return self:tabs_span() + self:item_height() * (#self:rows() + 1)
 end
 
 function Sidebar:question_id(question)
@@ -132,21 +137,31 @@ end
 
 function Sidebar:draw_tabs()
   local height = self:tab_height()
-  local width = self.size.x / #bank.rounds
+  local width = self.size.x
   self.tab_hits = {}
   for index, round in ipairs(bank.rounds) do
-    local x = self.position.x + (index - 1) * width
-    local y = self.position.y
+    local x = self.position.x
+    local y = self.position.y + (index - 1) * height
     local active = index == self.round_index
-    renderer.draw_rect(x, y, width, height, active and style.background or style.background2)
+    local hovered = self.hovered_tab == index
+    local fill = style.background2
     if active then
-      renderer.draw_rect(x, y + height - style.divider_size, width, style.divider_size, style.accent or style.text)
+      fill = style.background
+    elseif hovered then
+      fill = style.line_highlight
     end
-    local color = active and style.text or style.dim
-    common.draw_text(style.font, color, round.label, "center", x, y, width, height)
+    renderer.draw_rect(x, y, width, height, fill)
+    if active then
+      local mark = math.max(style.divider_size * 2, 2)
+      renderer.draw_rect(x, y, mark, height, style.accent or style.text)
+    end
+    local color = (active or hovered) and style.text or style.dim
+    local text_x = x + style.padding.x
+    common.draw_text(style.font, color, round.label, "left", text_x, y, width - style.padding.x * 2, height)
     self.tab_hits[index] = { x = x, y = y, w = width, h = height }
   end
-  renderer.draw_rect(self.position.x, self.position.y + height - style.divider_size, self.size.x, style.divider_size, style.divider)
+  local bottom = self.position.y + self:tabs_span()
+  renderer.draw_rect(self.position.x, bottom - style.divider_size, self.size.x, style.divider_size, style.divider)
 end
 
 function Sidebar:draw()
@@ -154,7 +169,8 @@ function Sidebar:draw()
   self:draw_background(style.background2)
   self:draw_tabs()
   local height = self:item_height()
-  core.push_clip_rect(self.position.x, self.position.y + self:tab_height(), self.size.x, self.size.y - self:tab_height())
+  local list_top = self.position.y + self:tabs_span()
+  core.push_clip_rect(self.position.x, list_top, self.size.x, math.max(0, self.position.y + self.size.y - list_top))
   for row, x, y, w, h in self:each_row() do
     if y + h >= self.position.y and y < self.position.y + self.size.y then
       local hovered = self.hovered_key == self:row_key(row)
@@ -191,10 +207,20 @@ end
 function Sidebar:on_mouse_moved(px, py, ...)
   if Sidebar.super.on_mouse_moved(self, px, py, ...) then
     self.hovered_key = nil
+    self.hovered_tab = nil
     return
   end
   self.hovered_key = nil
-  if py < self.position.y + self:tab_height() then return end
+  self.hovered_tab = nil
+  if py >= self.position.y and py < self.position.y + self:tabs_span() then
+    for index, hit in ipairs(self.tab_hits) do
+      if px >= hit.x and px < hit.x + hit.w and py >= hit.y and py < hit.y + hit.h then
+        self.hovered_tab = index
+        return
+      end
+    end
+    return
+  end
   for row, x, y, w, h in self:each_row() do
     if px >= x and px < x + w and py >= y and py < y + h then
       self.hovered_key = self:row_key(row)
@@ -207,7 +233,7 @@ function Sidebar:on_mouse_pressed(button, px, py, clicks)
   if Sidebar.super.on_mouse_pressed(self, button, px, py, clicks) then
     return true
   end
-  if py >= self.position.y and py < self.position.y + self:tab_height() then
+  if py >= self.position.y and py < self.position.y + self:tabs_span() then
     for index, hit in ipairs(self.tab_hits) do
       if px >= hit.x and px < hit.x + hit.w and py >= hit.y and py < hit.y + hit.h then
         self.round_index = index

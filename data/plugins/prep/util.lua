@@ -230,7 +230,20 @@ end
 
 function util.wrap(font, text, max_width)
   local lines = {}
-  max_width = math.max(max_width, font:get_width("M") * 8)
+  max_width = math.max(max_width or 0, font:get_width("M"))
+  local function break_token(word)
+    local chunk = ""
+    for char in common.utf8_chars(word) do
+      local trial = chunk .. char
+      if chunk ~= "" and font:get_width(trial) > max_width then
+        lines[#lines + 1] = chunk
+        chunk = char
+      else
+        chunk = trial
+      end
+    end
+    return chunk
+  end
   for para in (tostring(text or "") .. "\n"):gmatch("(.-)\n") do
     if para == "" then
       lines[#lines + 1] = ""
@@ -238,11 +251,17 @@ function util.wrap(font, text, max_width)
       local line = ""
       for word in para:gmatch("%S+") do
         local trial = line == "" and word or (line .. " " .. word)
-        if font:get_width(trial) > max_width and line ~= "" then
-          lines[#lines + 1] = line
-          line = word
-        else
+        if font:get_width(trial) <= max_width then
           line = trial
+        else
+          if line ~= "" then
+            lines[#lines + 1] = line
+          end
+          if font:get_width(word) > max_width then
+            line = break_token(word)
+          else
+            line = word
+          end
         end
       end
       if line ~= "" then lines[#lines + 1] = line end

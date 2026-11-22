@@ -1,4 +1,4 @@
-#define MyAppName      "Lite XL"
+#define MyAppName      "Prep"
 #define MyAppVersion   "@PROJECT_VERSION@"
 #define MyAppPublisher "Lite XL Team"
 #define MyAppURL       "https://lite-xl.com"
@@ -96,7 +96,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 6.2; Check: not IsAdminInstallMode
 Name: "portablemode"; Description: "Extract only, do not install"; Flags: unchecked
-Name: "envPath"; Description: "Add Lite XL to PATH"; Flags: unchecked
+Name: "envPath"; Description: "Add Prep to PATH"; Flags: unchecked
 
 [Files]
 Source: "{#BuildDir}/lite-xl/*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs

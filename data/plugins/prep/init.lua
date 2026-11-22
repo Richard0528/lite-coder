@@ -69,6 +69,15 @@ state.sidebar = sidebar
 local primary = core.root_view:get_primary_node()
 primary:split("left", sidebar, { x = true }, true)
 
+-- Soft-wrap the editor and the right-hand documents to the pane width.
+-- The line-wrapping plugin reads this when each document view is created.
+local wrap = config.plugins.linewrapping
+if type(wrap) == "table" then
+  wrap.mode = "word"
+  wrap.guide = false
+  wrap.enable_by_default = true
+end
+
 local question_view = session.setup()
 primary = core.root_view:get_primary_node()
 -- Lock the pane after the tabs exist. add_view refuses a node that is already locked.

@@ -5,7 +5,7 @@
 	<key>CFBundleExecutable</key>
 	<string>lite-xl</string>
 	<key>CFBundleGetInfoString</key>
-	<string>lite-xl</string>
+	<string>Prep</string>
 	<key>CFBundleIconFile</key>
 	<string>icon.icns</string>
 	<key>CFBundleDocumentTypes</key>
@@ -35,7 +35,9 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.lite-xl</string>
 	<key>CFBundleName</key>
-	<string>Lite XL</string>
+	<string>Prep</string>
+	<key>CFBundleDisplayName</key>
+	<string>Prep</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>NSHighResolutionCapable</key>

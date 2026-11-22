@@ -135,8 +135,7 @@ function runner.run(examples)
     end
     spec_path = write_spec(session)
   end
-  local env = {}
-  if spec_path then env.PREP_SPEC = spec_path end
+  local env_extra = spec_path and { PREP_SPEC = spec_path } or nil
   if output() then
     output():clear()
     output().follow = true
@@ -154,7 +153,7 @@ function runner.run(examples)
     local argv = command_for(path, python_bin, node_bin)
     local proc, err = process.start(argv, {
       cwd = session.dir,
-      env = env,
+      env = util.runtime_env({ python_bin, node_bin }, env_extra),
       stdout = process.REDIRECT_PIPE,
       stderr = process.REDIRECT_PIPE,
     })

@@ -202,9 +202,9 @@ main() {
   fi
 
   # arch and platform specific stuff
-  if [[ "$platform" == "macos" ]]; then
+  if [[ "$platform" == "darwin" ]]; then
     macos_version_min="10.11"
-    if [[ "$arch" == "arm64" ]]; then
+    if [[ "$arch" == "aarch64" || "$arch" == "arm64" ]]; then
       macos_version_min="11.0"
     fi
     export MACOSX_DEPLOYMENT_TARGET="$macos_version_min"

@@ -100,6 +100,7 @@ function leetcode.capture()
     "--profile", profile,
     "--timeout", "180",
   }, {
+    env = util.runtime_env({ python }),
     stdout = process.REDIRECT_PIPE,
     stderr = process.REDIRECT_PIPE,
   })
@@ -199,7 +200,7 @@ local function run_sync(on_done)
   output_line("Syncing questions...")
   local proc, err = process.start(argv, {
     cwd = dirname(script),
-    env = { LEETCODE_USER_AGENT = util.user_agent() },
+    env = util.runtime_env({ python }, { LEETCODE_USER_AGENT = util.user_agent() }),
     stdin = process.REDIRECT_PIPE,
     stdout = process.REDIRECT_PIPE,
     stderr = process.REDIRECT_PIPE,

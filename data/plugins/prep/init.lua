@@ -17,6 +17,8 @@ if type(tree) == "table" and tree.visible == nil then
   tree.visible = false
 end
 
+local util = require "plugins.prep.util"
+
 local prep = config.plugins.prep
 local function fill(key, value)
   if prep[key] == nil then prep[key] = value end
@@ -24,8 +26,8 @@ end
 fill("sidebar_size", 220 * SCALE)
 fill("panel_size", 360 * SCALE)
 fill("timeout", 10)
-fill("python", "python3")
-fill("node", "node")
+fill("python", util.bundled_bin("python") or "python3")
+fill("node", util.bundled_bin("node") or "node")
 fill("fetch_script", "")
 if type(prep.llm) ~= "table" then prep.llm = {} end
 if prep.llm.base_url == nil then prep.llm.base_url = "https://api.openai.com/v1" end

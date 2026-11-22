@@ -12,6 +12,38 @@ function util.plugin_dir()
   return DATADIR .. PATHSEP .. "plugins" .. PATHSEP .. "prep"
 end
 
+---Interpreter shipped inside the app bundle. Absent in a source checkout,
+---which keeps the system python3 and node.
+function util.bundled_bin(kind)
+  local file = kind == "node" and "node" or "python3"
+  local path = DATADIR .. PATHSEP .. "runtimes" .. PATHSEP .. kind .. PATHSEP .. "bin" .. PATHSEP .. file
+  local info = system.get_file_info(path)
+  if info and info.type == "file" then return path end
+end
+
+---Environment for a solution or helper process. Bundled interpreters are put
+---on PATH, and a bundled Python ignores the user's site-packages.
+function util.runtime_env(bins, extra)
+  local env = {}
+  if extra then
+    for key, value in pairs(extra) do env[key] = value end
+  end
+  local prefix = {}
+  for _, bin in ipairs(bins or {}) do
+    local dir = type(bin) == "string" and bin:match("^(.*)[/\\][^/\\]+$")
+    if dir and dir:find(PATHSEP .. "runtimes" .. PATHSEP, 1, true) then
+      prefix[#prefix + 1] = dir
+    end
+  end
+  if #prefix == 0 and not extra then return nil end
+  if #prefix > 0 then
+    env.PATH = table.concat(prefix, ":") .. ":" .. (os.getenv("PATH") or "/usr/bin:/bin")
+    env.PYTHONNOUSERSITE = "1"
+    env.PYTHONDONTWRITEBYTECODE = "1"
+  end
+  return env
+end
+
 function util.sessions_dir()
   return util.prep_dir() .. PATHSEP .. "sessions"
 end

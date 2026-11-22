@@ -80,6 +80,69 @@ function leetcode.verify(cookie, on_done)
   end)
 end
 
+local logging_in = false
+
+function leetcode.capture()
+  if logging_in then
+    core.error("A LeetCode login is already in progress.")
+    return
+  end
+  local script = util.prep_script("leetcode_browser.py")
+  if not system.get_file_info(script) then
+    core.error("Login helper not found: %s", script)
+    return
+  end
+  local python = config.plugins.prep.python or "python3"
+  local profile = util.join(util.prep_dir(), "chrome-profile")
+  util.ensure_dir(profile)
+  local proc, err = process.start({
+    python, script,
+    "--profile", profile,
+    "--timeout", "180",
+  }, {
+    stdout = process.REDIRECT_PIPE,
+    stderr = process.REDIRECT_PIPE,
+  })
+  if not proc then
+    core.error("Could not open the login browser: %s", tostring(err))
+    return
+  end
+  logging_in = true
+  state.leetcode_busy = true
+  core.redraw = true
+  if state.output then
+    state.output:add("Opening LeetCode so you can sign in...", "meta")
+  end
+  core.add_thread(function()
+    local cookie
+    util.stream_process(proc, {
+      timeout = 200,
+      on_out = function(text)
+        for line in (text .. "\n"):gmatch("(.-)\n") do
+          if line:sub(1, 7) == "COOKIE " then
+            cookie = line:sub(8)
+          elseif line ~= "" and state.output then
+            state.output:add(line, "meta")
+          end
+        end
+      end,
+      on_err = function(text)
+        if state.output and text ~= "" then state.output:add(text, "meta") end
+      end,
+    })
+    logging_in = false
+    state.leetcode_busy = false
+    if cookie and cookie ~= "" then
+      leetcode.verify(cookie, function(ok)
+        if ok then core.status_view:show_message("i", require("core.style").text, "LeetCode cookie saved") end
+      end)
+    else
+      core.error("LeetCode login was not captured.")
+      core.redraw = true
+    end
+  end)
+end
+
 function leetcode.login(on_done)
   core.nag_view:show(
     "LeetCode login required",

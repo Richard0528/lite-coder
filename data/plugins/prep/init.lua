@@ -124,7 +124,8 @@ command.add(nil, {
     })
   end,
   ["prep:sync-questions"] = function() leetcode.sync() end,
-  ["prep:leetcode-login"] = function() leetcode.login() end,
+  ["prep:leetcode-login"] = function() leetcode.capture() end,
+  ["prep:leetcode-paste"] = function() leetcode.login() end,
   ["prep:leetcode-logout"] = function() leetcode.logout() end,
   ["prep:toggle-language"] = function() runner.toggle_language() end,
   ["prep:stop"] = function() runner.stop() end,
@@ -191,6 +192,35 @@ keymap.add({
   ["3"] = { "prep:quiz-3" },
   ["4"] = { "prep:quiz-4" },
   ["space"] = { "prep:quiz-next" },
+})
+
+core.status_view:add_item({
+  name = "prep:menu",
+  alignment = StatusView.Item.LEFT,
+  position = 1,
+  get_item = function()
+    if state.leetcode_busy then
+      return { style.text, "Menu  signing in" }
+    end
+    local who = state.leetcode_user
+    if who and who ~= "" then
+      return { style.text, "Menu  " .. who }
+    end
+    return { style.text, "Menu" }
+  end,
+  tooltip = "Prep menu",
+  command = function(button, x, y)
+    local menu = core.root_view.context_menu
+    local items = {
+      { text = "Log in to LeetCode", command = "prep:leetcode-login" },
+      { text = "Paste a LeetCode cookie", command = "prep:leetcode-paste" },
+      { text = "Sync questions", command = "prep:sync-questions" },
+    }
+    if state.leetcode_user and state.leetcode_user ~= "" then
+      items[#items + 1] = { text = "Sign out of LeetCode", command = "prep:leetcode-logout" }
+    end
+    menu:show(x, y, items)
+  end,
 })
 
 core.status_view:add_item({

@@ -270,13 +270,13 @@ function util.log(fmt, ...)
   core.log("[" .. "prep" .. "] " .. fmt, ...)
 end
 
-function util.fetch_script()
+function util.prep_script(name)
   local config = require "core.config"
-  local configured = config.plugins.prep and config.plugins.prep.fetch_script
+  local configured = name == "fetch_questions.py" and config.plugins.prep and config.plugins.prep.fetch_script
   local candidates = {
     configured,
-    util.plugin_dir() .. PATHSEP .. "fetch_questions.py",
-    DATADIR .. PATHSEP .. ".." .. PATHSEP .. "scripts" .. PATHSEP .. "prep" .. PATHSEP .. "fetch_questions.py",
+    util.plugin_dir() .. PATHSEP .. name,
+    DATADIR .. PATHSEP .. ".." .. PATHSEP .. "scripts" .. PATHSEP .. "prep" .. PATHSEP .. name,
   }
   for _, path in ipairs(candidates) do
     if type(path) == "string" and path ~= "" and system.get_file_info(path) then
@@ -284,6 +284,10 @@ function util.fetch_script()
     end
   end
   return candidates[2]
+end
+
+function util.fetch_script()
+  return util.prep_script("fetch_questions.py")
 end
 
 return util

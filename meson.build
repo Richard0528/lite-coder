@@ -170,7 +170,10 @@ foreach data_module : ['fonts', 'plugins', 'colors']
 endforeach
 
 install_data(
-    'scripts' / 'prep' / 'fetch_questions.py',
+    [
+        'scripts' / 'prep' / 'fetch_questions.py',
+        'scripts' / 'prep' / 'leetcode_browser.py',
+    ],
     install_dir : lite_datadir / 'plugins' / 'prep',
 )
 

@@ -85,7 +85,7 @@ python3 scripts/prep/fetch_questions.py --per-difficulty 20
 
 `--per-difficulty` defaults to 150. The result is written under `data/plugins/prep/bank/`, which is gitignored because LeetCode's text is not ours to commit. From inside the app, sync writes to `prep/bank` in your Lite XL user directory instead, so an installed copy does not need a writable application folder.
 
-If LeetCode asks for a login, the app opens the login page and asks you to paste the Cookie header from any `leetcode.com` request (DevTools, Network, Request Headers). Keep `cf_clearance` in that cookie. If it is still refused, set `config.plugins.prep.user_agent` to your browser's User-Agent and try again. **Prep: LeetCode Logout** clears the saved cookie.
+**Menu**, at the left of the status bar, opens LeetCode's login page in a separate browser window. Sign in there. The app reads the cookie from that window and stores it, then the status bar shows your username. That window uses its own profile, so it does not change the browser you use every day. It needs Chrome, Chromium, Edge, or Brave. **Paste a LeetCode cookie** in the same menu is the fallback: paste the Cookie header from a `leetcode.com` request, including `cf_clearance`. If LeetCode still refuses, set `config.plugins.prep.user_agent` to your browser's User-Agent. **Sign out of LeetCode** clears the saved cookie.
 
 ## Daily quiz
 

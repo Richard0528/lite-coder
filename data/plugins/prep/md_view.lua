@@ -278,9 +278,16 @@ end
 function MarkdownView:ensure_layout()
   ensure_fonts()
   local width = self:text_width()
+  local lines = self.doc.lines
+  -- Loading a question replaces doc.lines and resets the undo index, so the
+  -- index alone stays at 1 and would keep the previous question on screen.
   local change = self.doc:get_change_id()
-  if change == self.layout_id and width == self.layout_width and self.layout_scale == SCALE then
+  if lines == self.layout_lines and change == self.layout_id and width == self.layout_width and self.layout_scale == SCALE then
     return
+  end
+  if lines ~= self.layout_lines then
+    self.scroll.to.y = 0
+    self.scroll.y = 0
   end
   local source = {}
   for index, line in ipairs(self.doc.lines) do
@@ -383,6 +390,7 @@ function MarkdownView:ensure_layout()
   end
   self.items = items
   self.content_height = y + style.padding.y
+  self.layout_lines = lines
   self.layout_id = change
   self.layout_width = width
   self.layout_scale = SCALE

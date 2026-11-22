@@ -281,7 +281,9 @@ end
 
 
 function Node:should_show_tabs()
-  if self.locked then return false end
+  -- A locked pane with one view is a fixed tool, such as the question list.
+  -- Several views in a locked pane, such as the prep panel, still need tabs.
+  if self.locked and #self.views <= 1 then return false end
   local dn = core.root_view.dragged_node
   if #self.views > 1
      or (dn and dn.dragging) then -- show tabs while dragging
@@ -316,7 +318,7 @@ function Node:tab_hovered_update(px, py)
   self.hovered_tab = tab_index
   self.hovered_close = 0
   self.hovered_scroll_button = 0
-  if tab_index then
+  if tab_index and self.views[tab_index] and not self.views[tab_index].no_close then
     local x, y, w, h = self:get_tab_rect(tab_index)
     local cx, cw = close_button_location(x, w)
     if px >= cx and px < cx + cw and py >= y and py < y + h and config.tab_close_button then
@@ -565,7 +567,7 @@ function Node:draw_tab(view, is_active, is_hovered, is_close_hovered, x, y, w, h
   x, y, w, h = self:draw_tab_borders(view, is_active, is_hovered, x, y + margin_y, w, h - margin_y, standalone)
   -- Close button
   local cx, cw, cpad = close_button_location(x, w)
-  local show_close_button = ((is_active or is_hovered) and not standalone and config.tab_close_button)
+  local show_close_button = ((is_active or is_hovered) and not standalone and config.tab_close_button and not (view and view.no_close))
   if show_close_button then
     local close_style = is_close_hovered and style.text or style.dim
     common.draw_text(style.icon_font, close_style, "C", nil, cx, y, cw, h)

@@ -13,6 +13,8 @@ function OutputView:new()
   OutputView.super.new(self)
   self.scrollable = true
   self.lines = {}
+  self.no_close = true
+  self.no_drag = true
 end
 
 function OutputView:get_name()

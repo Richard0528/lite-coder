@@ -186,14 +186,15 @@ function RootView:on_mouse_pressed(button, x, y, clicks)
   end
   local idx = node:get_tab_overlapping_point(x, y)
   if idx then
-    if button == "middle" or node.hovered_close == idx then
-      node:close_view(self.root_node, node.views[idx])
+    local tab_view = node.views[idx]
+    if (button == "middle" or node.hovered_close == idx) and not tab_view.no_close then
+      node:close_view(self.root_node, tab_view)
       return true
     else
-      if button == "left" then
+      if button == "left" and not tab_view.no_drag then
         self.dragged_node = { node = node, idx = idx, dragging = false, drag_start_x = x, drag_start_y = y}
       end
-      node:set_active_view(node.views[idx])
+      node:set_active_view(tab_view)
       return true
     end
   elseif not self.dragged_node then -- avoid sending on_mouse_pressed events when dragging tabs

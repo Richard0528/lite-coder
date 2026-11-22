@@ -25,11 +25,11 @@ local function state_path(dir)
 end
 
 function session.setup()
-  local question_doc, question_view = md.create("Question", "Open a question from the sidebar.\n", true)
+  local question_doc, question_view = md.create("Question", "Open a question from the sidebar.\n", true, nil, true)
   local output = OutputView()
   local scratch_doc, scratch_view = md.create("Scratchpad", "Open a question to use the scratchpad.\n", true)
-  local ai_doc, ai_view = md.create("AI", "Open a question to use AI assist.\n", true)
-  local review_doc, review_view = md.create("Review", "", true)
+  local ai_doc, ai_view = md.create("AI", "Open a question to use AI assist.\n", true, nil, true)
+  local review_doc, review_view = md.create("Review", "", true, nil, true)
   state.output = output
   state.docs = {
     question = question_doc,

@@ -2,7 +2,7 @@
 
 A coding-interview practice app built on [Lite XL], which is itself a small
 Lua editor derived from [lite]. The editor is unchanged. A `prep` plugin adds
-practice rounds, a way to run Python and Node, an AI review, and a daily quiz.
+practice rounds, a way to run Python, Node, and Java, an AI review, and a daily quiz.
 
 Upstream Lite XL releases do not include this plugin. Build this repository
 to get the app. The [Lite XL website][website] still covers the editor itself.
@@ -26,7 +26,7 @@ ln -sfn "$PWD/data" build/src/data
 
 The link puts `data/` next to the binary, which is where Lite XL looks for it. If a Homebrew upgrade moves PCRE2, FreeType, or SDL3 and linking fails, run `meson setup --reconfigure build` and compile again.
 
-Python 3 and Node are needed only after the app is open, to run solutions.
+Python 3, Node, and a JDK are needed only after the app is open, to run solutions.
 
 ## Practice rounds
 
@@ -35,7 +35,7 @@ brings it back.
 
 | Tab | What you do |
 | --- | --- |
-| Code | Solve a problem in Python or Node. |
+| Code | Solve a problem in Python, Node, or Java. |
 | Design | Write a system design in the editor. There is nothing to run. |
 | Debug | Fix a starter that already contains a bug. The AI will answer 3 questions for that problem. |
 | Explain | Read the given code and write the explanation in the scratchpad. The AI stays off until you click Done. |
@@ -54,9 +54,9 @@ The editor keeps your solution. The panel on the right has five tabs:
 
 **Run** (`Cmd+Return` / `Ctrl+Return`) runs the file you are editing when it belongs to the open question. **Examples** calls the solution on each sample input when the question defines a function signature. **Stop** kills a run. A run is stopped after 10 seconds.
 
-Python and Node are both available. Click the language name in the status bar to switch. The first run looks the binary up through your login shell, so an app opened from Finder can still find nvm or pyenv. The Output tab prints the path it used. Set `config.plugins.prep.python` or `config.plugins.prep.node` to a full path if the lookup picks the wrong one.
+Python, Node, and Java are available. Click the language name in the status bar to cycle. The first run looks the binary up through your login shell, so an app opened from Finder can still find nvm, pyenv, or a JDK. The Output tab prints the path it used. Set `config.plugins.prep.python`, `config.plugins.prep.node`, `config.plugins.prep.java`, or `config.plugins.prep.javac` to a full path if the lookup picks the wrong one.
 
-Both runtimes preload the helpers interviews usually assume: `collections`, `heapq`, lists, trees, heaps, and deques. Your code runs as you, with only the timeout as a limit.
+Each runtime preloads the helpers interviews usually assume: lists, trees, heaps, and deques, plus Python's `collections` and `heapq`. In Java, `ListNode` and `TreeNode` live in the same package as `Solution`, and the starter imports `java.util`. The Java file is `Solution.java`. Run compiles it and runs `main` when that method exists. Examples calls the method on `Solution` with each sample. Your code runs as you, with only the timeout as a limit.
 
 ## AI review and memory
 

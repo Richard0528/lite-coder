@@ -231,24 +231,29 @@ def html_to_md(content):
     return text.strip() + "\n"
 
 
+def remember_template(found, lang, code):
+    lang = (lang or "").lower()
+    if lang == "python":
+        lang = "python3"
+    if lang not in ("python3", "javascript", "java") or not code or lang in found:
+        return
+    found[lang] = code
+
+
 def templates_from(question):
     found = {}
     for snip in question.get("codeSnippets") or []:
-        lang = (snip.get("langSlug") or "").lower()
-        code = snip.get("code") or ""
-        if lang in ("python3", "python", "javascript") and code:
-            found["python3" if lang == "python" else lang] = code
+        remember_template(found, snip.get("langSlug"), snip.get("code") or "")
     raw = question.get("codeDefinition")
-    if raw and "python3" not in found and "javascript" not in found:
+    if raw and ("python3" not in found or "javascript" not in found or "java" not in found):
         try:
             data = json.loads(raw) if isinstance(raw, str) else raw
         except json.JSONDecodeError:
             data = []
         for item in data or []:
-            lang = (item.get("value") or item.get("langSlug") or "").lower()
+            lang = item.get("value") or item.get("langSlug") or ""
             code = item.get("defaultCode") or item.get("text") or item.get("code") or ""
-            if lang in ("python3", "python", "javascript") and code:
-                found["python3" if lang == "python" else lang] = code
+            remember_template(found, lang, code)
     return found
 
 

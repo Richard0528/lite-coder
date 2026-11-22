@@ -28,6 +28,8 @@ fill("panel_size", 360 * SCALE)
 fill("timeout", 10)
 fill("python", util.bundled_bin("python") or "python3")
 fill("node", util.bundled_bin("node") or "node")
+fill("java", "java")
+fill("javac", "javac")
 fill("fetch_script", "")
 if type(prep.llm) ~= "table" then prep.llm = {} end
 if prep.llm.base_url == nil then prep.llm.base_url = "https://api.openai.com/v1" end
@@ -242,7 +244,7 @@ core.status_view:add_item({
     return { style.text, runner.language_label(state.session.language) }
   end,
   command = "prep:toggle-language",
-  tooltip = "Toggle Python / Node",
+  tooltip = "Cycle Python, Node, and Java",
 })
 
 core.status_view:add_item({

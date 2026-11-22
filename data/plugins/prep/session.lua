@@ -78,15 +78,114 @@ function session.save_state(current)
   }))
 end
 
+local function canonical_language(language)
+  if type(language) ~= "string" then return nil end
+  language = language:lower()
+  if language == "javascript" or language == "nodejs" or language == "node" then
+    return "javascript"
+  end
+  if language == "java" then return "java" end
+  if language == "python" or language == "python3" then return "python" end
+  return nil
+end
+
+local JAVA_WORDS = {}
+for word in ([[ abstract assert boolean break byte case catch char class const continue default do double else enum extends final finally float for goto if implements import instanceof int interface long native new package private protected public return short static strictfp super switch synchronized this throw throws transient try void volatile while true false null var record sealed permits yield ]]):gmatch("%S+") do
+  JAVA_WORDS[word] = true
+end
+
+local JAVA_PRIMITIVE = {
+  integer = "int", int = "int", long = "long", double = "double", float = "float",
+  boolean = "boolean", bool = "boolean", string = "String", character = "char",
+  char = "char", void = "void", short = "short", byte = "byte",
+}
+
+local JAVA_BOX = {
+  int = "Integer", long = "Long", double = "Double", float = "Float",
+  boolean = "Boolean", char = "Character", short = "Short", byte = "Byte",
+}
+
+local function java_type(type_name, boxed)
+  if type(type_name) ~= "string" then return "Object" end
+  type_name = type_name:gsub("%s+", ""):gsub("%*", "")
+  if type_name == "" then return "Object" end
+  local inner = type_name:match("^[Ll]ist<(.*)>$")
+  if inner then return "List<" .. java_type(inner, true) .. ">" end
+  inner = type_name:match("^[Ss]et<(.*)>$")
+  if inner then return "Set<" .. java_type(inner, true) .. ">" end
+  if type_name:sub(-2) == "[]" then
+    return java_type(type_name:sub(1, -3), false) .. "[]"
+  end
+  local mapped = JAVA_PRIMITIVE[type_name] or type_name
+  if boxed and JAVA_BOX[mapped] then return JAVA_BOX[mapped] end
+  return mapped
+end
+
+local function java_ident(name, fallback)
+  if type(name) == "string" and name:match("^[%a_][%w_]*$") and not JAVA_WORDS[name] then
+    return name
+  end
+  return fallback
+end
+
+local function java_return_line(jtype)
+  if jtype == "void" then return "" end
+  if jtype == "boolean" then return "        return false;\n" end
+  if jtype == "int" or jtype == "long" or jtype == "short" or jtype == "byte"
+    or jtype == "char" or jtype == "float" or jtype == "double" then
+    return "        return 0;\n"
+  end
+  return "        return null;\n"
+end
+
+local function return_type_name(meta)
+  local ret = meta["return"]
+  if type(ret) == "table" then return ret.type end
+  if type(ret) == "string" then return ret end
+  return "void"
+end
+
+local function java_param(param, index)
+  local name, type_name
+  if type(param) == "table" then
+    name = param.name
+    type_name = param.type
+  end
+  return java_type(type_name, false) .. " " .. java_ident(name, "arg" .. tostring(index))
+end
+
+local function java_template(question)
+  local templates = question.templates or {}
+  if type(templates.java) == "string" and templates.java ~= "" then
+    return templates.java
+  end
+  local meta = question.meta
+  if type(meta) == "table" and type(meta.name) == "string" and meta.name ~= "" then
+    local parts = {}
+    for index, param in ipairs(meta.params or {}) do
+      parts[#parts + 1] = java_param(param, index)
+    end
+    local ret = java_type(return_type_name(meta), false)
+    local method = java_ident(meta.name, "solve")
+    return "import java.util.*;\n\npublic class Solution {\n    public "
+      .. ret .. " " .. method .. "(" .. table.concat(parts, ", ") .. ") {\n"
+      .. java_return_line(ret)
+      .. "    }\n}\n"
+  end
+  return "import java.util.*;\n\npublic class Solution {\n    public Object solve() {\n        return null;\n    }\n}\n"
+end
+
 local function template_for(question, language)
   local templates = question.templates or {}
   if question.round == "debug" then
-    local origin = question.language or "python"
-    local matches = (language == "javascript" and origin == "javascript") or (language ~= "javascript" and origin ~= "javascript")
-    if matches and question.buggy_code then return question.buggy_code end
-    local comment = language == "javascript" and "// " or "# "
-    return comment .. "The buggy starter for this question is " .. origin .. ".\n"
+    local origin = canonical_language(question.language) or "python"
+    if origin == canonical_language(language) and question.buggy_code then
+      return question.buggy_code
+    end
+    local comment = canonical_language(language) == "python" and "# " or "// "
+    return comment .. "The buggy starter for this question is " .. (question.language or origin) .. ".\n"
   end
+  if language == "java" then return java_template(question) end
   if language == "javascript" then
     return templates.javascript or templates.nodejs or "var solve = function() {\n};\n"
   end
@@ -96,10 +195,13 @@ end
 local function solution_file(question, language)
   if question.round == "design" then return "design.md" end
   if question.round == "explain" then
-    local ext = (question.language == "javascript") and "js" or "py"
-    return "code." .. ext
+    local origin = canonical_language(question.language) or "python"
+    if origin == "javascript" then return "code.js" end
+    if origin == "java" then return "code.java" end
+    return "code.py"
   end
   if language == "javascript" then return "solution.js" end
+  if language == "java" then return "Solution.java" end
   return "solution.py"
 end
 
@@ -252,9 +354,9 @@ function session.open(round, slug)
     local dir = util.sessions_dir() .. PATHSEP .. round .. PATHSEP .. util.safe_name(question.slug)
     util.ensure_dir(dir)
     local saved = decode_file(state_path(dir)) or {}
-    local language = saved.language
-    if language ~= "python" and language ~= "javascript" then
-      if question.language == "javascript" then language = "javascript" else language = "python" end
+    local language = canonical_language(saved.language)
+    if not language then
+      language = canonical_language(question.language) or "python"
     end
     current = {
       id = id,
@@ -308,7 +410,8 @@ function session.toggle_language()
   if round ~= "coding" and round ~= "debug" then return end
   session.save_files()
   local old_doc = current.solution_doc
-  current.language = current.language == "javascript" and "python" or "javascript"
+  local next_language = { python = "javascript", javascript = "java", java = "python" }
+  current.language = next_language[current.language] or "python"
   open_editor(current)
   if old_doc ~= current.solution_doc then close_doc_views(old_doc) end
   session.save_state()

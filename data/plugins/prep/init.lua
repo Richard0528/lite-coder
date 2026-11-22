@@ -23,7 +23,7 @@ local prep = config.plugins.prep
 local function fill(key, value)
   if prep[key] == nil then prep[key] = value end
 end
-fill("sidebar_size", 220 * SCALE)
+fill("sidebar_size", 300 * SCALE)
 fill("panel_size", 360 * SCALE)
 fill("timeout", 10)
 fill("python", util.bundled_bin("python") or "python3")

@@ -6,7 +6,12 @@ local style = require "core.style"
 local View = require "core.view"
 local bank = require "plugins.prep.bank"
 local memory = require "plugins.prep.memory"
-local util = require "plugins.prep.util"
+
+local attempted_bg = { common.color "#E6B325" }
+local attempted_hover = { common.color "#F0C44A" }
+local solved_bg = { common.color "#3FA86A" }
+local solved_hover = { common.color "#52BE7C" }
+local status_text = { common.color "#1c1c1f" }
 
 local Sidebar = View:extend()
 
@@ -32,7 +37,7 @@ end
 
 function Sidebar:set_target_size(axis, value)
   if axis == "x" then
-    self.target_size = value
+    self.target_size = math.max(value, self:tab_width() + 120 * SCALE)
     return true
   end
 end
@@ -60,8 +65,17 @@ function Sidebar:tab_height()
   return style.font:get_height() + style.padding.y * 2
 end
 
-function Sidebar:tabs_span()
-  return self:tab_height() * #bank.rounds
+function Sidebar:tab_width()
+  local widest = 0
+  for _, round in ipairs(bank.rounds) do
+    widest = math.max(widest, style.font:get_width(round.label))
+  end
+  return widest + style.padding.x * 2
+end
+
+function Sidebar:in_tab_column(px, py)
+  return px >= self.position.x and px < self.position.x + self:tab_width()
+    and py >= self.position.y and py < self.position.y + self.size.y
 end
 
 function Sidebar:rows()
@@ -107,8 +121,10 @@ end
 
 function Sidebar:each_row()
   local rows = self:rows()
-  local ox, oy = self:get_content_offset()
-  local y = oy + self:tabs_span()
+  local _, oy = self:get_content_offset()
+  local x = self.position.x + self:tab_width()
+  local y = oy
+  local w = math.max(0, self.size.x - self:tab_width())
   local h = self:item_height()
   local i = 0
   return function()
@@ -117,12 +133,12 @@ function Sidebar:each_row()
     if not row then return nil end
     local top = y
     y = y + h
-    return row, ox, top, self.size.x, h
+    return row, x, top, w, h
   end
 end
 
 function Sidebar:get_scrollable_size()
-  return self:tabs_span() + self:item_height() * (#self:rows() + 1)
+  return self:item_height() * (#self:rows() + 1)
 end
 
 function Sidebar:question_id(question)
@@ -136,46 +152,53 @@ function Sidebar:row_key(row)
 end
 
 function Sidebar:draw_tabs()
+  local width = self:tab_width()
   local height = self:tab_height()
-  local width = self.size.x
+  local x = self.position.x
+  local y0 = self.position.y
+  renderer.draw_rect(x, y0, width, self.size.y, style.background)
   self.tab_hits = {}
   for index, round in ipairs(bank.rounds) do
-    local x = self.position.x
-    local y = self.position.y + (index - 1) * height
+    local y = y0 + (index - 1) * height
     local active = index == self.round_index
     local hovered = self.hovered_tab == index
-    local fill = style.background2
-    if active then
-      fill = style.background
-    elseif hovered then
-      fill = style.line_highlight
+    if active or hovered then
+      renderer.draw_rect(x, y, width, height, style.line_highlight)
     end
-    renderer.draw_rect(x, y, width, height, fill)
     if active then
       local mark = math.max(style.divider_size * 2, 2)
       renderer.draw_rect(x, y, mark, height, style.accent or style.text)
     end
     local color = (active or hovered) and style.text or style.dim
-    local text_x = x + style.padding.x
-    common.draw_text(style.font, color, round.label, "left", text_x, y, width - style.padding.x * 2, height)
+    common.draw_text(style.font, color, round.label, "center", x, y, width, height)
     self.tab_hits[index] = { x = x, y = y, w = width, h = height }
   end
-  local bottom = self.position.y + self:tabs_span()
-  renderer.draw_rect(self.position.x, bottom - style.divider_size, self.size.x, style.divider_size, style.divider)
+  renderer.draw_rect(x + width - style.divider_size, y0, style.divider_size, self.size.y, style.divider)
 end
 
 function Sidebar:draw()
   if not self.visible then return end
   self:draw_background(style.background2)
-  self:draw_tabs()
   local height = self:item_height()
-  local list_top = self.position.y + self:tabs_span()
-  core.push_clip_rect(self.position.x, list_top, self.size.x, math.max(0, self.position.y + self.size.y - list_top))
+  local list_x = self.position.x + self:tab_width()
+  core.push_clip_rect(list_x, self.position.y, math.max(0, self.size.x - self:tab_width()), self.size.y)
   for row, x, y, w, h in self:each_row() do
     if y + h >= self.position.y and y < self.position.y + self.size.y then
       local hovered = self.hovered_key == self:row_key(row)
       local selected = row.kind == "question" and self.selected_id == self:question_id(row.question)
-      if hovered or selected then
+      local status_bg, title_color
+      if row.kind == "question" then
+        local status = memory.status(self:question_id(row.question))
+        if status == "solved" then
+          status_bg = (hovered or selected) and solved_hover or solved_bg
+        elseif status == "attempted" then
+          status_bg = (hovered or selected) and attempted_hover or attempted_bg
+        end
+        if status_bg then title_color = status_text end
+      end
+      if status_bg then
+        renderer.draw_rect(x, y, w, height, status_bg)
+      elseif hovered or selected then
         renderer.draw_rect(x, y, w, height, style.line_highlight)
       end
       local text_x = x + style.padding.x + (row.depth or 0) * style.padding.x
@@ -187,20 +210,14 @@ function Sidebar:draw()
       elseif row.kind == "empty" then
         common.draw_text(style.font, style.dim, row.text, nil, text_x, y, 0, h)
       else
-        local id = self:question_id(row.question)
-        local status = memory.status(id)
-        local dot = style.dim
-        if status == "attempted" then dot = util.warn()
-        elseif status == "solved" then dot = util.good() end
-        common.draw_text(style.font, dot, "●", nil, text_x, y, 0, h)
-        text_x = text_x + style.font:get_width("●") + style.padding.x / 2
-        local color = (hovered or selected) and style.accent or style.text
+        local color = title_color or ((hovered or selected) and style.accent or style.text)
         local title = row.question.title or row.question.slug
         common.draw_text(style.font, color, title, nil, text_x, y, 0, h)
       end
     end
   end
   core.pop_clip_rect()
+  self:draw_tabs()
   self:draw_scrollbar()
 end
 
@@ -212,7 +229,7 @@ function Sidebar:on_mouse_moved(px, py, ...)
   end
   self.hovered_key = nil
   self.hovered_tab = nil
-  if py >= self.position.y and py < self.position.y + self:tabs_span() then
+  if self:in_tab_column(px, py) then
     for index, hit in ipairs(self.tab_hits) do
       if px >= hit.x and px < hit.x + hit.w and py >= hit.y and py < hit.y + hit.h then
         self.hovered_tab = index
@@ -233,7 +250,7 @@ function Sidebar:on_mouse_pressed(button, px, py, clicks)
   if Sidebar.super.on_mouse_pressed(self, button, px, py, clicks) then
     return true
   end
-  if py >= self.position.y and py < self.position.y + self:tabs_span() then
+  if self:in_tab_column(px, py) then
     for index, hit in ipairs(self.tab_hits) do
       if px >= hit.x and px < hit.x + hit.w and py >= hit.y and py < hit.y + hit.h then
         self.round_index = index
@@ -242,6 +259,7 @@ function Sidebar:on_mouse_pressed(button, px, py, clicks)
         return true
       end
     end
+    return true
   end
   local row
   for item, x, y, w, h in self:each_row() do

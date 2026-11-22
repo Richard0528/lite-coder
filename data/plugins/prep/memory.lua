@@ -47,6 +47,9 @@ function memory.touch(question)
   entry.last_seen = util.now()
   entry.title = question.title or entry.title
   entry.round = question.round
+  if entry.status ~= "solved" then
+    entry.status = "attempted"
+  end
   idx[id] = entry
   save_index(idx)
 end

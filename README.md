@@ -7,6 +7,27 @@ practice rounds, a way to run Python and Node, an AI review, and a daily quiz.
 Upstream Lite XL releases do not include this plugin. Build this repository
 to get the app. The [Lite XL website][website] still covers the editor itself.
 
+## Build and run
+
+Install Meson (>= 0.63), Ninja, a C compiler, SDL3, PCRE2, and FreeType. Lua 5.4 is bundled when it is not already installed. On macOS:
+
+```sh
+brew install meson ninja pkg-config sdl3 pcre2 freetype
+```
+
+From this directory:
+
+```sh
+meson setup --buildtype=release build
+meson compile -C build
+ln -sfn "$PWD/data" build/src/data
+./build/src/lite-xl
+```
+
+The link puts `data/` next to the binary, which is where Lite XL looks for it. If a Homebrew upgrade moves PCRE2, FreeType, or SDL3 and linking fails, run `meson setup --reconfigure build` and compile again.
+
+Python 3 and Node are needed only after the app is open, to run solutions.
+
 ## Practice rounds
 
 The sidebar has four rounds. The file tree starts hidden; `treeview:toggle`
@@ -138,67 +159,7 @@ and may not run the build script correctly.
 
 ### Building
 
-You can use `scripts/build.sh` to set up Lite XL and build it.
-
-```sh
-$ bash build.sh --help
-# Usage: scripts/build.sh <OPTIONS>
-# 
-# Available options:
-# 
-# -b --builddir DIRNAME         Sets the name of the build directory (not path).
-#                               Default: 'build-x86_64-linux'.
-#    --debug                    Debug this script.
-# -f --forcefallback            Force to build dependencies statically.
-# -h --help                     Show this help and exit.
-# -d --debug-build              Builds a debug build.
-# -p --prefix PREFIX            Install directory prefix. Default: '/'.
-# -B --bundle                   Create an App bundle (macOS only)
-# -A --addons                   Add in addons
-# -P --portable                 Create a portable binary package.
-# -r --reconfigure              Tries to reuse the meson build directory, if possible.
-#                               Default: Deletes the build directory and recreates it.
-# -O --pgo                      Use profile guided optimizations (pgo).
-#                               macOS: disabled when used with --bundle,
-#                               Windows: Implicit being the only option.
-#    --cross-platform PLATFORM  Cross compile for this platform.
-#                               The script will find the appropriate
-#                               cross file in 'resources/cross'.
-#    --cross-arch ARCH          Cross compile for this architecture.
-#                               The script will find the appropriate
-#                               cross file in 'resources/cross'.
-#    --cross-file CROSS_FILE    Cross compile with the given cross file.
-```
-
-Alternatively, you can use the following commands to customize the build:
-
-```sh
-meson setup --buildtype=release --prefix <prefix> build
-meson compile -C build
-DESTDIR="$(pwd)/lite-xl" meson install --skip-subprojects -C build
-```
-
-where `<prefix>` might be one of `/`, `/usr` or `/opt`, the default is `/`.
-
-To try a build without installing it system-wide:
-
-```sh
-meson setup build
-meson compile -C build
-meson install -C build --destdir dist
-dist/usr/local/bin/lite-xl
-```
-
-To build a bundle application on macOS:
-
-```sh
-meson setup --buildtype=release --Dbundle=true --prefix / build
-meson compile -C build
-DESTDIR="$(pwd)/Lite XL.app" meson install --skip-subprojects -C build
-```
-
-Please note that the package is relocatable to any prefix and the option prefix
-affects only the place where the application is actually installed.
+See [Build and run](#build-and-run). `scripts/build.sh --help` lists packaging and cross-compile options.
 
 ## Installing Prebuilt
 

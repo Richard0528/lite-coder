@@ -1,39 +1,85 @@
-# Lite XL
+# lite-coder
 
-[![CI]](https://github.com/lite-xl/lite-xl/actions/workflows/build.yml)
-[![Discord Badge Image]](https://discord.gg/UQKnzBhY5H)
+A coding-interview practice app built on [Lite XL], which is itself a small
+Lua editor derived from [lite]. The editor is unchanged. A `prep` plugin adds
+practice rounds, a way to run Python and Node, an AI review, and a daily quiz.
 
-![screenshot-dark]
+Upstream Lite XL releases do not include this plugin. Build this repository
+to get the app. The [Lite XL website][website] still covers the editor itself.
 
-A lightweight text editor written in Lua, adapted from [lite].
+## Practice rounds
 
-* **[Get Lite XL]** — Download for Windows, Linux and Mac OS.
-* **[Get plugins]** — Add additional functionality, adapted for Lite XL.
-* **[Get color themes]** — Add additional colors themes.
+The sidebar has four rounds. The file tree starts hidden; `treeview:toggle`
+brings it back.
 
-Please refer to our [website] for the user and developer documentation,
-including [build] instructions details. A quick build guide is described below.
+| Tab | What you do |
+| --- | --- |
+| Code | Solve a problem in Python or Node. |
+| Design | Write a system design in the editor. There is nothing to run. |
+| Debug | Fix a starter that already contains a bug. The AI will answer 3 questions for that problem. |
+| Explain | Read the given code and write the explanation in the scratchpad. The AI stays off until you click Done. |
 
-Lite XL has support for high DPI display on Windows and Linux and,
-since 1.16.7 release, it supports **retina displays** on macOS.
+Open a question from the list, or with **Find Question** (`Cmd+Option+P` on macOS, `Ctrl+Alt+P` elsewhere). A dot marks each question as new, attempted, or solved.
 
-Please note that Lite XL is compatible with lite for most plugins and all color themes.
-We provide a separate lite-xl-plugins repository for Lite XL, because in some cases
-some adaptations may be needed to make them work better with Lite XL.
-The repository with modified plugins is https://github.com/lite-xl/lite-xl-plugins.
+The editor keeps your solution. The panel on the right has five tabs:
 
-The changes and differences between Lite XL and rxi/lite are listed in the
-[changelog].
+- **Question** shows the prompt, and a short note from each earlier attempt.
+- **Output** shows what the program printed, including errors.
+- **Scratchpad** is a normal document for notes.
+- **AI** is a hint chat. Ask with the Ask button or `Cmd+Shift+A` / `Ctrl+Shift+A`.
+- **Review** is the write-up from Done.
+
+## Running code
+
+**Run** (`Cmd+Return` / `Ctrl+Return`) runs the file you are editing when it belongs to the open question. **Examples** calls the solution on each sample input when the question defines a function signature. **Stop** kills a run. A run is stopped after 10 seconds.
+
+Python and Node are both available. Click the language name in the status bar to switch. The first run looks the binary up through your login shell, so an app opened from Finder can still find nvm or pyenv. The Output tab prints the path it used. Set `config.plugins.prep.python` or `config.plugins.prep.node` to a full path if the lookup picks the wrong one.
+
+Both runtimes preload the helpers interviews usually assume: `collections`, `heapq`, lists, trees, heaps, and deques. Your code runs as you, with only the timeout as a limit.
+
+## AI review and memory
+
+Set `OPENAI_API_KEY`, or enter a key when asked. It is saved in your Lite XL user directory at `prep/secrets.lua`, readable only by you. Any OpenAI-compatible endpoint works. In the user module (`core:open-user-module`):
+
+```lua
+config.plugins.prep.llm.base_url = "https://api.openai.com/v1"
+config.plugins.prep.llm.model = "gpt-4o-mini"
+```
+
+**Done** (`Cmd+Shift+Return` / `Ctrl+Shift+Return`) sends the question, your code, the scratchpad, the last run, and the short notes from earlier attempts. The full write-up stays in that question's Review tab.
+
+What is remembered across sessions is small and tied to the question: status, at most five session lines (date, verdict, a short summary, and the missing piece), and at most four flashcards. Code is not stored in that record. The flashcards show up in the daily quiz.
+
+In a coding round the AI gives hints only. In a design round it interviews you. In a debug round you get 3 questions for that problem, spent when you ask and returned if the call fails. Clicking Done starts a fresh budget.
+
+## Question bank
+
+A small curated set ships with the app: a few coding problems, system-design prompts, debug starters, explain-the-code snippets, and a multiple-choice quiz. **Prep: Sync Questions** downloads more.
+
+The script is [scripts/prep/fetch_questions.py](scripts/prep/fetch_questions.py). It follows the LeetCode requests used by [vscode-leetcode](https://github.com/LeetCode-OpenSource/vscode-leetcode) (problem list, question detail, cookie headers). From a terminal:
+
+```sh
+python3 scripts/prep/fetch_questions.py --per-difficulty 20
+```
+
+`--per-difficulty` defaults to 150. The result is written under `data/plugins/prep/bank/`, which is gitignored because LeetCode's text is not ours to commit. From inside the app, sync writes to `prep/bank` in your Lite XL user directory instead, so an installed copy does not need a writable application folder.
+
+If LeetCode asks for a login, the app opens the login page and asks you to paste the Cookie header from any `leetcode.com` request (DevTools, Network, Request Headers). Keep `cf_clearance` in that cookie. If it is still refused, set `config.plugins.prep.user_agent` to your browser's User-Agent and try again. **Prep: LeetCode Logout** clears the saved cookie.
+
+## Daily quiz
+
+With no file open, the editor shows one quiz card: five questions for the day, mixed with flashcards that are due. Press 1–4 or click an answer. A line at the bottom shows your streak, how many questions you have solved, and the last question so you can continue it.
 
 ## Overview
 
 Lite XL is derived from [lite].
 It is a lightweight text editor written mostly in Lua — it aims to provide
-something practical, pretty, *small* and fast easy to modify and extend,
+something practical, pretty, *small* and fast, easy to modify and extend,
 or to use without doing either.
 
 The aim of Lite XL compared to lite is to be more user friendly,
-improve the quality of font rendering, and reduce CPU usage.
+improve the quality of font rendering, and reduce CPU usage. The differences
+are listed in the [changelog].
 
 ## Customization
 
@@ -52,14 +98,15 @@ via your desired package manager, or manually.
 
 - Meson (>=0.63)
 - Ninja
-- SDL2
+- SDL3
 - PCRE2
 - FreeType2
 - Lua 5.4
 - A working C compiler (GCC / Clang / MSVC)
 
-SDL2, PCRE2, FreeType2 and Lua will be downloaded by Meson
+PCRE2, FreeType2 and Lua will be downloaded by Meson
 if `--wrap-mode=forcefallback` or `--wrap-mode=default` is specified.
+SDL3 is not bundled. On macOS, `brew install sdl3`.
 
 > [!NOTE]
 > MSVC is used in the CI, but MSVC-compiled binaries are not distributed officially
@@ -132,6 +179,16 @@ DESTDIR="$(pwd)/lite-xl" meson install --skip-subprojects -C build
 ```
 
 where `<prefix>` might be one of `/`, `/usr` or `/opt`, the default is `/`.
+
+To try a build without installing it system-wide:
+
+```sh
+meson setup build
+meson compile -C build
+meson install -C build --destdir dist
+dist/usr/local/bin/lite-xl
+```
+
 To build a bundle application on macOS:
 
 ```sh

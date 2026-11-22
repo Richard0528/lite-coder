@@ -38,6 +38,20 @@ This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
 http://scripts.sil.org/OFL
 
+## Question fetching
+
+The LeetCode requests in `scripts/prep/fetch_questions.py` follow the request
+shapes used by [vscode-leetcode](https://github.com/LeetCode-OpenSource/vscode-leetcode)
+and [leetcode-cli](https://github.com/leetcode-tools/leetcode-cli) (published as
+`vsc-leetcode-cli`). Both projects are MIT licensed. This repository
+reimplements those requests and does not copy their source.
+
+Algorithm snippets downloaded by the fetch script come from
+[TheAlgorithms/Python](https://github.com/TheAlgorithms/Python) and
+[TheAlgorithms/JavaScript](https://github.com/TheAlgorithms/JavaScript),
+which are MIT licensed. They are written into the generated bank and are not
+committed here.
+
 ## JetBrains Mono
 
 Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)

@@ -169,6 +169,11 @@ foreach data_module : ['fonts', 'plugins', 'colors']
     install_subdir(join_paths('data', data_module), install_dir : lite_datadir)
 endforeach
 
+install_data(
+    'scripts' / 'prep' / 'fetch_questions.py',
+    install_dir : lite_datadir / 'plugins' / 'prep',
+)
+
 configure_file(
     input : 'data' / 'core' / 'start.lua',
     output : 'start.lua',

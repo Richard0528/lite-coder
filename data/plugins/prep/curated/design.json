@@ -1,0 +1,386 @@
+[
+  {
+    "round": "design",
+    "slug": "design-a-url-shortener",
+    "title": "Design a URL shortener",
+    "difficulty": "Easy",
+    "content_md": "# Design a URL shortener\n\nDesign a service that turns a long URL into a short code and redirects later.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- How do you generate codes?\n- What happens when the mapping store is down?\n",
+    "followups": [
+      "How do you generate codes?",
+      "What happens when the mapping store is down?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-rate-limiter",
+    "title": "Design a rate limiter",
+    "difficulty": "Easy",
+    "content_md": "# Design a rate limiter\n\nDesign a limiter that allows N requests per user per window.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- Token bucket vs fixed window?\n- Where does the counter live if you have many servers?\n",
+    "followups": [
+      "Token bucket vs fixed window?",
+      "Where does the counter live if you have many servers?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-key-value-store",
+    "title": "Design a key-value store",
+    "difficulty": "Medium",
+    "content_md": "# Design a key-value store\n\nDesign a durable key-value store with get and put.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- How do you replicate?\n- What is the read path when the leader is slow?\n",
+    "followups": [
+      "How do you replicate?",
+      "What is the read path when the leader is slow?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-news-feed",
+    "title": "Design a news feed",
+    "difficulty": "Medium",
+    "content_md": "# Design a news feed\n\nDesign the home feed for a social app.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- Fan-out on write or read?\n- How do you rank?\n",
+    "followups": [
+      "Fan-out on write or read?",
+      "How do you rank?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-chat-system",
+    "title": "Design a chat system",
+    "difficulty": "Medium",
+    "content_md": "# Design a chat system\n\nDesign 1:1 chat with history and online presence.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- How do you deliver a message if the recipient is offline?\n- How do you order messages?\n",
+    "followups": [
+      "How do you deliver a message if the recipient is offline?",
+      "How do you order messages?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-web-crawler",
+    "title": "Design a web crawler",
+    "difficulty": "Medium",
+    "content_md": "# Design a web crawler\n\nDesign a crawler that fetches pages and avoids fetching the same URL twice.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- How do you stay polite?\n- How do you partition the URL frontier?\n",
+    "followups": [
+      "How do you stay polite?",
+      "How do you partition the URL frontier?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-search-typeahead",
+    "title": "Design a search typeahead",
+    "difficulty": "Medium",
+    "content_md": "# Design a search typeahead\n\nDesign prefix suggestions as the user types.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- What data structure sits in memory?\n- How fresh are the suggestions?\n",
+    "followups": [
+      "What data structure sits in memory?",
+      "How fresh are the suggestions?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-metrics-system",
+    "title": "Design a metrics system",
+    "difficulty": "Medium",
+    "content_md": "# Design a metrics system\n\nDesign ingest and query for time-series counters.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- How do you roll up old data?\n- What is the write path?\n",
+    "followups": [
+      "How do you roll up old data?",
+      "What is the write path?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-notification-service",
+    "title": "Design a notification service",
+    "difficulty": "Medium",
+    "content_md": "# Design a notification service\n\nDesign push, email, and SMS notifications with retries.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- How do you avoid sending the same alert twice?\n- How do you shed load?\n",
+    "followups": [
+      "How do you avoid sending the same alert twice?",
+      "How do you shed load?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-file-store",
+    "title": "Design a file store",
+    "difficulty": "Medium",
+    "content_md": "# Design a file store\n\nDesign upload, download, and sharing of large files.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- Where do bytes live vs metadata?\n- How do you resume an upload?\n",
+    "followups": [
+      "Where do bytes live vs metadata?",
+      "How do you resume an upload?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-cdn",
+    "title": "Design a CDN",
+    "difficulty": "Medium",
+    "content_md": "# Design a CDN\n\nDesign a cache in front of an origin for static files.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- What is the cache key?\n- How do you purge?\n",
+    "followups": [
+      "What is the cache key?",
+      "How do you purge?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-an-api-gateway",
+    "title": "Design an API gateway",
+    "difficulty": "Medium",
+    "content_md": "# Design an API gateway\n\nDesign a gateway that authenticates, routes, and limits traffic.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- What belongs in the gateway vs the service?\n- How do you roll out a bad route?\n",
+    "followups": [
+      "What belongs in the gateway vs the service?",
+      "How do you roll out a bad route?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-job-queue",
+    "title": "Design a job queue",
+    "difficulty": "Medium",
+    "content_md": "# Design a job queue\n\nDesign a queue where workers pull jobs and ack them.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- What if a worker dies mid-job?\n- How do you delay a retry?\n",
+    "followups": [
+      "What if a worker dies mid-job?",
+      "How do you delay a retry?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-distributed-lock",
+    "title": "Design a distributed lock",
+    "difficulty": "Medium",
+    "content_md": "# Design a distributed lock\n\nDesign a lock that many services can acquire.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- How do you avoid two holders?\n- What if the holder crashes?\n",
+    "followups": [
+      "How do you avoid two holders?",
+      "What if the holder crashes?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-unique-id-generator",
+    "title": "Design a unique ID generator",
+    "difficulty": "Easy",
+    "content_md": "# Design a unique ID generator\n\nDesign IDs that are unique across many servers and roughly sortable by time.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- What is in an ID?\n- What happens if clocks skew?\n",
+    "followups": [
+      "What is in an ID?",
+      "What happens if clocks skew?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-payment-ledger",
+    "title": "Design a payment ledger",
+    "difficulty": "Hard",
+    "content_md": "# Design a payment ledger\n\nDesign a ledger that records charges and refunds exactly once.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- How do you get idempotency?\n- How do you reconcile?\n",
+    "followups": [
+      "How do you get idempotency?",
+      "How do you reconcile?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-ride-matching-service",
+    "title": "Design a ride matching service",
+    "difficulty": "Hard",
+    "content_md": "# Design a ride matching service\n\nDesign matching a rider to a nearby driver.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- How do you index location?\n- What do you do when the chosen driver cancels?\n",
+    "followups": [
+      "How do you index location?",
+      "What do you do when the chosen driver cancels?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-video-streaming-service",
+    "title": "Design a video streaming service",
+    "difficulty": "Hard",
+    "content_md": "# Design a video streaming service\n\nDesign upload, transcode, and playback of video.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- Where does transcoding happen?\n- How does the player pick a bitrate?\n",
+    "followups": [
+      "Where does transcoding happen?",
+      "How does the player pick a bitrate?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-collaborative-editor",
+    "title": "Design a collaborative editor",
+    "difficulty": "Hard",
+    "content_md": "# Design a collaborative editor\n\nDesign a document many people edit at once.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- How do you merge concurrent edits?\n- What is stored: snapshots or operations?\n",
+    "followups": [
+      "How do you merge concurrent edits?",
+      "What is stored: snapshots or operations?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-an-e-commerce-checkout",
+    "title": "Design an e-commerce checkout",
+    "difficulty": "Hard",
+    "content_md": "# Design an e-commerce checkout\n\nDesign cart, inventory reserve, and payment.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- How long do you hold inventory?\n- What if payment succeeds and the order write fails?\n",
+    "followups": [
+      "How long do you hold inventory?",
+      "What if payment succeeds and the order write fails?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-logging-pipeline",
+    "title": "Design a logging pipeline",
+    "difficulty": "Medium",
+    "content_md": "# Design a logging pipeline\n\nDesign collection, buffering, and search of service logs.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- What do you drop under load?\n- How do you query the last 15 minutes?\n",
+    "followups": [
+      "What do you drop under load?",
+      "How do you query the last 15 minutes?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-feature-flag-service",
+    "title": "Design a feature-flag service",
+    "difficulty": "Easy",
+    "content_md": "# Design a feature-flag service\n\nDesign flags that can target a percent of users and change without a deploy.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- How fast must a change propagate?\n- How do you keep a client from hammering the service?\n",
+    "followups": [
+      "How fast must a change propagate?",
+      "How do you keep a client from hammering the service?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-pastebin",
+    "title": "Design a pastebin",
+    "difficulty": "Easy",
+    "content_md": "# Design a pastebin\n\nDesign create and read for text snippets with an expiry.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- What is the key?\n- How do you delete expired pastes?\n",
+    "followups": [
+      "What is the key?",
+      "How do you delete expired pastes?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-parking-lot",
+    "title": "Design a parking lot",
+    "difficulty": "Easy",
+    "content_md": "# Design a parking lot\n\nDesign a lot with different spot sizes and a board of free spots.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- What objects do you model?\n- How do you find the nearest fitting spot?\n",
+    "followups": [
+      "What objects do you model?",
+      "How do you find the nearest fitting spot?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-cache",
+    "title": "Design a cache",
+    "difficulty": "Medium",
+    "content_md": "# Design a cache\n\nDesign an in-process cache with a capacity and an eviction policy.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- LRU vs LFU?\n- How do you make get O(1)?\n",
+    "followups": [
+      "LRU vs LFU?",
+      "How do you make get O(1)?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-consistent-hashing",
+    "title": "Design consistent hashing",
+    "difficulty": "Medium",
+    "content_md": "# Design consistent hashing\n\nExplain where a key lives as nodes join and leave.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- What are virtual nodes for?\n- What moves when a node dies?\n",
+    "followups": [
+      "What are virtual nodes for?",
+      "What moves when a node dies?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-leaderboard",
+    "title": "Design a leaderboard",
+    "difficulty": "Medium",
+    "content_md": "# Design a leaderboard\n\nDesign a live top-100 scoreboard.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- What data structure?\n- How do you update a score that already exists?\n",
+    "followups": [
+      "What data structure?",
+      "How do you update a score that already exists?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-proximity-service",
+    "title": "Design a proximity service",
+    "difficulty": "Medium",
+    "content_md": "# Design a proximity service\n\nDesign 'places near me'.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- How do you index the earth?\n- How do you rank distance vs popularity?\n",
+    "followups": [
+      "How do you index the earth?",
+      "How do you rank distance vs popularity?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-scheduler",
+    "title": "Design a scheduler",
+    "difficulty": "Medium",
+    "content_md": "# Design a scheduler\n\nDesign 'run this job at time T' for millions of jobs.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- How do you find due jobs?\n- What if the scheduler restarts?\n",
+    "followups": [
+      "How do you find due jobs?",
+      "What if the scheduler restarts?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-secrets-store",
+    "title": "Design a secrets store",
+    "difficulty": "Hard",
+    "content_md": "# Design a secrets store\n\nDesign storage and delivery of service secrets.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- Who can read a secret?\n- How do you rotate without downtime?\n",
+    "followups": [
+      "Who can read a secret?",
+      "How do you rotate without downtime?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-multiplayer-game-lobby",
+    "title": "Design a multiplayer game lobby",
+    "difficulty": "Medium",
+    "content_md": "# Design a multiplayer game lobby\n\nDesign matchmaking into a room of N players of similar skill.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- What if a player disconnects in the lobby?\n- How do you avoid long waits?\n",
+    "followups": [
+      "What if a player disconnects in the lobby?",
+      "How do you avoid long waits?"
+    ],
+    "source": "curated"
+  },
+  {
+    "round": "design",
+    "slug": "design-a-photo-sharing-feed",
+    "title": "Design a photo sharing feed",
+    "difficulty": "Medium",
+    "content_md": "# Design a photo sharing feed\n\nDesign upload, resize, and a follow graph feed.\n\nCover requirements, API, data, scale, and failure.\n\n## Follow-ups\n\n- Where are thumbnails generated?\n- How do you serve a popular photo?\n",
+    "followups": [
+      "Where are thumbnails generated?",
+      "How do you serve a popular photo?"
+    ],
+    "source": "curated"
+  }
+]

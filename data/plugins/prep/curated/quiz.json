@@ -1,0 +1,1900 @@
+[
+  {
+    "id": "array-1",
+    "topic": "array",
+    "q": "What is the average lookup cost of a hash table?",
+    "choices": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n log n)"
+    ],
+    "answer": 1,
+    "explain": "A good hash spreads keys so the average bucket is a short chain."
+  },
+  {
+    "id": "array-2",
+    "topic": "array",
+    "q": "Which structure gives O(1) indexed access?",
+    "choices": [
+      "Linked list",
+      "Array",
+      "Binary heap",
+      "Hash set of unknown order"
+    ],
+    "answer": 2,
+    "explain": "An array stores elements in contiguous slots addressed by index."
+  },
+  {
+    "id": "array-3",
+    "topic": "array",
+    "q": "Two pointers on a sorted array usually replace which pattern?",
+    "choices": [
+      "A nested loop",
+      "A graph traversal",
+      "A sort",
+      "A hash of hashes"
+    ],
+    "answer": 1,
+    "explain": "The inner scan becomes a pointer that only moves forward."
+  },
+  {
+    "id": "array-4",
+    "topic": "array",
+    "q": "A sliding window is a good fit when the problem asks for",
+    "choices": [
+      "Every subarray of a fixed or bounded size",
+      "The shortest path",
+      "A balanced tree",
+      "A topological order"
+    ],
+    "answer": 1,
+    "explain": "The window maintains a contiguous range and slides across the array."
+  },
+  {
+    "id": "hash-5",
+    "topic": "hash",
+    "q": "A hash collision is",
+    "choices": [
+      "Two keys landing in the same bucket",
+      "A full disk",
+      "A cycle in a list",
+      "An overflow of a stack"
+    ],
+    "answer": 1,
+    "explain": "The table must chain or probe when two keys share a bucket."
+  },
+  {
+    "id": "hash-6",
+    "topic": "hash",
+    "q": "Why check the complement before inserting in two-sum?",
+    "choices": [
+      "So a value is not paired with itself",
+      "To keep the array sorted",
+      "To use less memory",
+      "To make the scan O(n log n)"
+    ],
+    "answer": 1,
+    "explain": "Inserting first lets a value match its own index when 2x equals the target."
+  },
+  {
+    "id": "string-7",
+    "topic": "string",
+    "q": "Longest substring without a repeat is typically",
+    "choices": [
+      "O(n) with a window",
+      "O(n^2) always",
+      "O(log n)",
+      "O(1)"
+    ],
+    "answer": 1,
+    "explain": "Each character enters and leaves the window at most once."
+  },
+  {
+    "id": "string-8",
+    "topic": "string",
+    "q": "A trie stores",
+    "choices": [
+      "One character per edge",
+      "Whole words in one node",
+      "Only hashes",
+      "Only suffixes of length 3"
+    ],
+    "answer": 1,
+    "explain": "Walking edges spells a prefix."
+  },
+  {
+    "id": "list-9",
+    "topic": "list",
+    "q": "Reversing a singly linked list in place needs",
+    "choices": [
+      "Previous, current, and next",
+      "A second copy of the list",
+      "Random access",
+      "A heap"
+    ],
+    "answer": 1,
+    "explain": "You save next, point current back, then advance."
+  },
+  {
+    "id": "list-10",
+    "topic": "list",
+    "q": "Finding the middle of a singly linked list in one pass uses",
+    "choices": [
+      "A fast and a slow pointer",
+      "Binary search",
+      "A hash of indexes",
+      "Recursion of depth n always"
+    ],
+    "answer": 1,
+    "explain": "The fast pointer moves two steps, so slow is at the middle when fast ends."
+  },
+  {
+    "id": "list-11",
+    "topic": "list",
+    "q": "A cycle in a linked list is detected by",
+    "choices": [
+      "Floyd's two pointers",
+      "Sorting the nodes",
+      "A binary search",
+      "Reversing twice"
+    ],
+    "answer": 1,
+    "explain": "If there is a cycle, fast eventually meets slow."
+  },
+  {
+    "id": "stack-12",
+    "topic": "stack",
+    "q": "A stack is the natural structure for",
+    "choices": [
+      "Matching brackets",
+      "A FIFO print queue",
+      "A priority of tasks",
+      "An LRU cache alone"
+    ],
+    "answer": 1,
+    "explain": "The most recent opener must close first, which is LIFO."
+  },
+  {
+    "id": "stack-13",
+    "topic": "stack",
+    "q": "The call stack of a depth-first search is",
+    "choices": [
+      "Implicit in recursion or an explicit stack",
+      "A queue",
+      "A heap",
+      "A hash set"
+    ],
+    "answer": 1,
+    "explain": "DFS explores the latest node first."
+  },
+  {
+    "id": "queue-14",
+    "topic": "queue",
+    "q": "Breadth-first search uses a",
+    "choices": [
+      "Queue",
+      "Stack",
+      "Heap",
+      "Union-find"
+    ],
+    "answer": 1,
+    "explain": "FIFO visits nodes in order of distance from the start."
+  },
+  {
+    "id": "queue-15",
+    "topic": "queue",
+    "q": "A deque helps a sliding-window maximum because",
+    "choices": [
+      "You can drop indexes from both ends",
+      "It sorts the window",
+      "It hashes values",
+      "It is always O(1) to find the median"
+    ],
+    "answer": 1,
+    "explain": "The front is the current max index; the back drops smaller candidates."
+  },
+  {
+    "id": "heap-16",
+    "topic": "heap",
+    "q": "A binary heap gives you",
+    "choices": [
+      "The min or max in O(1) and updates in O(log n)",
+      "Sorted order after every insert for free",
+      "O(1) search by key",
+      "O(1) median"
+    ],
+    "answer": 1,
+    "explain": "The root is the extreme; bubbling restores the heap."
+  },
+  {
+    "id": "heap-17",
+    "topic": "heap",
+    "q": "Top-k with a heap of size k costs",
+    "choices": [
+      "O(n log k)",
+      "O(n + k)",
+      "O(k)",
+      "O(log n)"
+    ],
+    "answer": 1,
+    "explain": "Each of n items does O(log k) work on a heap that never grows past k."
+  },
+  {
+    "id": "heap-18",
+    "topic": "heap",
+    "q": "Dijkstra's algorithm uses a heap to",
+    "choices": [
+      "Pick the next closest unsettled node",
+      "Detect cycles",
+      "Sort the adjacency lists",
+      "Balance a tree"
+    ],
+    "answer": 1,
+    "explain": "The heap orders nodes by current best distance."
+  },
+  {
+    "id": "tree-19",
+    "topic": "tree",
+    "q": "In a binary search tree, an in-order walk yields",
+    "choices": [
+      "Sorted keys",
+      "Level order",
+      "Reverse insertion order",
+      "A random order"
+    ],
+    "answer": 1,
+    "explain": "Left, node, right visits keys from small to large."
+  },
+  {
+    "id": "tree-20",
+    "topic": "tree",
+    "q": "A balanced BST keeps search at",
+    "choices": [
+      "O(log n)",
+      "O(1)",
+      "O(n)",
+      "O(n log n)"
+    ],
+    "answer": 1,
+    "explain": "The height stays logarithmic, so each search takes that many steps."
+  },
+  {
+    "id": "tree-21",
+    "topic": "tree",
+    "q": "The height of a skewed BST of n nodes is",
+    "choices": [
+      "O(n)",
+      "O(log n)",
+      "O(1)",
+      "O(sqrt n)"
+    ],
+    "answer": 1,
+    "explain": "Every node has one child, so the tree is a list."
+  },
+  {
+    "id": "tree-22",
+    "topic": "tree",
+    "q": "A heap is not a good BST because",
+    "choices": [
+      "It does not order left and right children by key",
+      "It uses too much memory",
+      "It cannot hold numbers",
+      "It is always balanced"
+    ],
+    "answer": 1,
+    "explain": "Heap order is only parent vs children, so search is not O(log n)."
+  },
+  {
+    "id": "graph-23",
+    "topic": "graph",
+    "q": "Topological sort applies to",
+    "choices": [
+      "A directed acyclic graph",
+      "Any undirected graph",
+      "Only trees",
+      "Only complete graphs"
+    ],
+    "answer": 1,
+    "explain": "A cycle has no valid order of prerequisites."
+  },
+  {
+    "id": "graph-24",
+    "topic": "graph",
+    "q": "An undirected graph has a cycle if DFS sees",
+    "choices": [
+      "A visited neighbor that is not the parent",
+      "Any neighbor",
+      "A node with degree 1",
+      "A node with a color"
+    ],
+    "answer": 1,
+    "explain": "That back edge closes a cycle."
+  },
+  {
+    "id": "graph-25",
+    "topic": "graph",
+    "q": "Number of connected components is found by",
+    "choices": [
+      "A DFS or BFS from every unvisited node",
+      "Sorting all edges",
+      "A single binary search",
+      "Counting vertices only"
+    ],
+    "answer": 1,
+    "explain": "Each fresh search discovers one component."
+  },
+  {
+    "id": "graph-26",
+    "topic": "graph",
+    "q": "Dijkstra requires edge weights to be",
+    "choices": [
+      "Non-negative",
+      "Negative",
+      "All equal",
+      "Integers above 100"
+    ],
+    "answer": 1,
+    "explain": "A negative edge can make a settled node wrong."
+  },
+  {
+    "id": "graph-27",
+    "topic": "graph",
+    "q": "Bellman-Ford is used when",
+    "choices": [
+      "Edges may be negative",
+      "The graph is a tree",
+      "You only need connectivity",
+      "Weights are all 1"
+    ],
+    "answer": 1,
+    "explain": "It relaxes every edge n-1 times and can report a negative cycle."
+  },
+  {
+    "id": "graph-28",
+    "topic": "graph",
+    "q": "Union-find is a fit for",
+    "choices": [
+      "Dynamic connectivity",
+      "Shortest paths",
+      "String search",
+      "Sorting"
+    ],
+    "answer": 1,
+    "explain": "Unite joins sets; find tells you if two nodes are already connected."
+  },
+  {
+    "id": "graph-29",
+    "topic": "graph",
+    "q": "Path compression in union-find",
+    "choices": [
+      "Flattens the parent chain during find",
+      "Sorts the edges",
+      "Removes cycles from a directed graph",
+      "Balances a BST"
+    ],
+    "answer": 1,
+    "explain": "Nodes point closer to the root, so later finds are shorter."
+  },
+  {
+    "id": "trie-30",
+    "topic": "trie",
+    "q": "Lookup of a word of length L in a trie is",
+    "choices": [
+      "O(L)",
+      "O(n)",
+      "O(log n) in the number of words only",
+      "O(1) regardless of L"
+    ],
+    "answer": 1,
+    "explain": "You follow one edge per character."
+  },
+  {
+    "id": "sort-31",
+    "topic": "sort",
+    "q": "Mergesort's worst-case time is",
+    "choices": [
+      "O(n log n)",
+      "O(n^2)",
+      "O(n)",
+      "O(log n)"
+    ],
+    "answer": 1,
+    "explain": "Each of log n layers merges n elements."
+  },
+  {
+    "id": "sort-32",
+    "topic": "sort",
+    "q": "Quicksort's average time is",
+    "choices": [
+      "O(n log n)",
+      "O(n)",
+      "O(n^2) always",
+      "O(log n)"
+    ],
+    "answer": 1,
+    "explain": "Balanced partitions give log n levels. The worst case is still quadratic."
+  },
+  {
+    "id": "sort-33",
+    "topic": "sort",
+    "q": "Heapsort uses",
+    "choices": [
+      "O(1) extra memory and O(n log n) time",
+      "O(n) extra memory",
+      "O(n^2) time",
+      "A hash table"
+    ],
+    "answer": 1,
+    "explain": "The heap is built inside the array."
+  },
+  {
+    "id": "sort-34",
+    "topic": "sort",
+    "q": "Counting sort is linear when",
+    "choices": [
+      "Keys are integers in a small range",
+      "Keys are arbitrary strings",
+      "The list is already a heap",
+      "n is a prime"
+    ],
+    "answer": 1,
+    "explain": "You count occurrences and write them back in order."
+  },
+  {
+    "id": "sort-35",
+    "topic": "sort",
+    "q": "A stable sort keeps",
+    "choices": [
+      "The original order of equal keys",
+      "All keys unique",
+      "The array in a heap",
+      "Negative numbers first"
+    ],
+    "answer": 1,
+    "explain": "Equal items stay in the order they arrived."
+  },
+  {
+    "id": "search-36",
+    "topic": "search",
+    "q": "Binary search requires",
+    "choices": [
+      "A sorted array",
+      "A hash table",
+      "A linked list",
+      "Unique values only"
+    ],
+    "answer": 1,
+    "explain": "The test at the middle decides which half to drop."
+  },
+  {
+    "id": "search-37",
+    "topic": "search",
+    "q": "Lower bound binary search returns",
+    "choices": [
+      "The first index where the value could be inserted",
+      "The last index always",
+      "A boolean",
+      "The median"
+    ],
+    "answer": 1,
+    "explain": "It is the leftmost position not less than the target."
+  },
+  {
+    "id": "search-38",
+    "topic": "search",
+    "q": "Each correct binary search step",
+    "choices": [
+      "Discards half of the remaining range",
+      "Discards one element",
+      "Sorts the half",
+      "Hashes the middle"
+    ],
+    "answer": 1,
+    "explain": "That is why the cost is logarithmic."
+  },
+  {
+    "id": "dp-39",
+    "topic": "dp",
+    "q": "Overlapping subproblems means",
+    "choices": [
+      "The same smaller problem is solved many times",
+      "The input has duplicates",
+      "The graph is dense",
+      "The answer is unique"
+    ],
+    "answer": 1,
+    "explain": "Memoization or a table stores that answer once."
+  },
+  {
+    "id": "dp-40",
+    "topic": "dp",
+    "q": "0/1 knapsack walking the capacity backward",
+    "choices": [
+      "Uses each item at most once",
+      "Sorts the items",
+      "Allows unbounded items",
+      "Runs in O(n)"
+    ],
+    "answer": 1,
+    "explain": "Forward updates would reuse an item inside the same pass."
+  },
+  {
+    "id": "dp-41",
+    "topic": "dp",
+    "q": "The number of ways to climb stairs with 1 or 2 steps is",
+    "choices": [
+      "A Fibonacci recurrence",
+      "Always n",
+      "n squared",
+      "A shortest path in a grid"
+    ],
+    "answer": 1,
+    "explain": "Ways to reach i is ways(i-1) + ways(i-2)."
+  },
+  {
+    "id": "dp-42",
+    "topic": "dp",
+    "q": "Edit distance fills a table of",
+    "choices": [
+      "Prefixes of both strings",
+      "Only the longer string",
+      "Characters sorted",
+      "Hashes"
+    ],
+    "answer": 1,
+    "explain": "Cell (i, j) is the distance between the first i and first j characters."
+  },
+  {
+    "id": "greedy-43",
+    "topic": "greedy",
+    "q": "A greedy choice is safe when",
+    "choices": [
+      "A locally best step can be extended to a global optimum",
+      "The input is sorted descending only",
+      "You use a stack",
+      "n is even"
+    ],
+    "answer": 1,
+    "explain": "Interval scheduling and Huffman coding are classic cases."
+  },
+  {
+    "id": "greedy-44",
+    "topic": "greedy",
+    "q": "Activity selection sorts by",
+    "choices": [
+      "Finish time",
+      "Start time only",
+      "Duration descending",
+      "Name"
+    ],
+    "answer": 1,
+    "explain": "Taking the earliest finish leaves the most room for the rest."
+  },
+  {
+    "id": "interval-45",
+    "topic": "interval",
+    "q": "Merging overlapping intervals starts by",
+    "choices": [
+      "Sorting by start",
+      "Sorting by length",
+      "Using a hash of ends",
+      "A DFS"
+    ],
+    "answer": 1,
+    "explain": "Once sorted, you extend the current interval or start a new one."
+  },
+  {
+    "id": "complexity-46",
+    "topic": "complexity",
+    "q": "O(n log n) is typical of",
+    "choices": [
+      "Comparison sorts",
+      "One pass over an array",
+      "Hash lookup",
+      "Swapping two variables"
+    ],
+    "answer": 1,
+    "explain": "The log n factor is the depth of the divide or the heap."
+  },
+  {
+    "id": "complexity-47",
+    "topic": "complexity",
+    "q": "Amortized O(1) for a dynamic array push means",
+    "choices": [
+      "Occasional resizes are spread over many cheap pushes",
+      "Every push copies the array",
+      "The array never grows",
+      "Push is O(log n)"
+    ],
+    "answer": 1,
+    "explain": "A doubling resize costs O(n) but happens rarely."
+  },
+  {
+    "id": "complexity-48",
+    "topic": "complexity",
+    "q": "Space of a recursive DFS on a skewed tree is",
+    "choices": [
+      "O(n) stack frames",
+      "O(1)",
+      "O(log n) always",
+      "O(n^2)"
+    ],
+    "answer": 1,
+    "explain": "The recursion depth follows the height."
+  },
+  {
+    "id": "complexity-49",
+    "topic": "complexity",
+    "q": "Which is the slowest growing?",
+    "choices": [
+      "O(log n)",
+      "O(n)",
+      "O(n log n)",
+      "O(n^2)"
+    ],
+    "answer": 1,
+    "explain": "Logarithmic grows slower than any positive power of n."
+  },
+  {
+    "id": "system-50",
+    "topic": "system",
+    "q": "A cache hit ratio is",
+    "choices": [
+      "Hits divided by all lookups",
+      "Misses divided by capacity",
+      "Writes divided by reads",
+      "Evictions per second"
+    ],
+    "answer": 1,
+    "explain": "It is the fraction of lookups served from the cache."
+  },
+  {
+    "id": "system-51",
+    "topic": "system",
+    "q": "LRU eviction removes",
+    "choices": [
+      "The item used least recently",
+      "The largest item",
+      "A random item",
+      "The newest item"
+    ],
+    "answer": 1,
+    "explain": "A hash map plus a doubly linked list implements it in O(1)."
+  },
+  {
+    "id": "system-52",
+    "topic": "system",
+    "q": "Replication lag means",
+    "choices": [
+      "A follower is behind the leader's writes",
+      "The disk is full",
+      "The cache is cold",
+      "Clocks are synchronized"
+    ],
+    "answer": 1,
+    "explain": "Reads from the follower can miss recent writes."
+  },
+  {
+    "id": "system-53",
+    "topic": "system",
+    "q": "The CAP theorem says that during a partition you trade",
+    "choices": [
+      "Consistency against availability",
+      "Latency against throughput only",
+      "CPU against memory",
+      "SQL against files"
+    ],
+    "answer": 1,
+    "explain": "You cannot have both perfect consistency and perfect availability while split."
+  },
+  {
+    "id": "system-54",
+    "topic": "system",
+    "q": "Quorum writes and reads overlap so that",
+    "choices": [
+      "A read sees the latest write",
+      "Every node stores every key",
+      "Locks are unnecessary",
+      "Clocks match"
+    ],
+    "answer": 1,
+    "explain": "W + R > N forces the read set to meet the write set."
+  },
+  {
+    "id": "system-55",
+    "topic": "system",
+    "q": "Consistent hashing is used so that",
+    "choices": [
+      "Adding a node moves only a fraction of the keys",
+      "Every key moves",
+      "Keys stay on one fixed server forever",
+      "Hashes are reversible"
+    ],
+    "answer": 1,
+    "explain": "Only keys on the departed arc move."
+  },
+  {
+    "id": "system-56",
+    "topic": "system",
+    "q": "A token bucket rate limiter",
+    "choices": [
+      "Refills tokens over time and spends one per request",
+      "Rejects every other request",
+      "Counts users",
+      "Sorts requests"
+    ],
+    "answer": 1,
+    "explain": "An empty bucket means the caller must wait."
+  },
+  {
+    "id": "system-57",
+    "topic": "system",
+    "q": "Idempotency means",
+    "choices": [
+      "Repeating the request does not apply the effect twice",
+      "The request is fast",
+      "The request is authenticated",
+      "The request is encrypted"
+    ],
+    "answer": 1,
+    "explain": "Clients retry safely with an idempotency key."
+  },
+  {
+    "id": "system-58",
+    "topic": "system",
+    "q": "Backpressure is",
+    "choices": [
+      "Slowing producers when consumers fall behind",
+      "Adding more producers",
+      "Dropping the database",
+      "Caching everything"
+    ],
+    "answer": 1,
+    "explain": "Bounded queues and explicit flow control are common tools."
+  },
+  {
+    "id": "system-59",
+    "topic": "system",
+    "q": "A write-ahead log lets you",
+    "choices": [
+      "Replay committed operations after a crash",
+      "Skip fsync",
+      "Avoid indexes",
+      "Compress cold data"
+    ],
+    "answer": 1,
+    "explain": "The log is durable before the in-memory page is considered committed."
+  },
+  {
+    "id": "system-60",
+    "topic": "system",
+    "q": "Sharding a database by user id",
+    "choices": [
+      "Puts one user's rows on one shard",
+      "Copies every row to every shard",
+      "Removes the need for indexes",
+      "Sorts the table"
+    ],
+    "answer": 1,
+    "explain": "The shard key decides the partition."
+  },
+  {
+    "id": "system-61",
+    "topic": "system",
+    "q": "A bloom filter can",
+    "choices": [
+      "Say 'definitely not present' or 'maybe present'",
+      "Return the stored value",
+      "Delete in O(1) with no error",
+      "Sort keys"
+    ],
+    "answer": 1,
+    "explain": "False positives are possible; false negatives are not, for a standard filter."
+  },
+  {
+    "id": "system-62",
+    "topic": "system",
+    "q": "Sticky sessions at a load balancer",
+    "choices": [
+      "Send one client to the same server",
+      "Balance every request independently",
+      "Encrypt the payload",
+      "Shard the database"
+    ],
+    "answer": 1,
+    "explain": "Affinity is useful when session state lives in one process."
+  },
+  {
+    "id": "system-63",
+    "topic": "system",
+    "q": "Horizontal scaling means",
+    "choices": [
+      "Adding more machines",
+      "A faster CPU in one machine",
+      "A bigger disk only",
+      "Fewer indexes"
+    ],
+    "answer": 1,
+    "explain": "Vertical scaling is the bigger machine."
+  },
+  {
+    "id": "system-64",
+    "topic": "system",
+    "q": "An index speeds reads and",
+    "choices": [
+      "Slows writes that must maintain it",
+      "Removes the need for a primary key",
+      "Compresses the table",
+      "Makes transactions optional"
+    ],
+    "answer": 1,
+    "explain": "Every insert or update may also update the index."
+  },
+  {
+    "id": "system-65",
+    "topic": "system",
+    "q": "Eventual consistency means",
+    "choices": [
+      "Replicas agree if updates stop",
+      "Every read is linearizable",
+      "Writes are rejected",
+      "There is one replica"
+    ],
+    "answer": 1,
+    "explain": "The system converges, but a read may be stale meanwhile."
+  },
+  {
+    "id": "system-66",
+    "topic": "system",
+    "q": "A circuit breaker",
+    "choices": [
+      "Stops calling a failing dependency for a while",
+      "Retries forever",
+      "Encrypts traffic",
+      "Balances CPU"
+    ],
+    "answer": 1,
+    "explain": "It fails fast instead of piling up timeouts."
+  },
+  {
+    "id": "system-67",
+    "topic": "system",
+    "q": "Fan-out on write for a feed",
+    "choices": [
+      "Pushes a new post into each follower's timeline",
+      "Builds the timeline at read time",
+      "Stores one global list only",
+      "Skips caching"
+    ],
+    "answer": 1,
+    "explain": "Reads are cheap; a celebrity write is expensive."
+  },
+  {
+    "id": "system-68",
+    "topic": "system",
+    "q": "A message queue decouples services so that",
+    "choices": [
+      "The producer does not wait for the consumer to finish",
+      "They share one database table",
+      "They must deploy together",
+      "Retries are impossible"
+    ],
+    "answer": 1,
+    "explain": "The queue absorbs bursts and allows independent failure."
+  },
+  {
+    "id": "system-69",
+    "topic": "system",
+    "q": "Two-phase commit coordinates",
+    "choices": [
+      "A commit across multiple databases",
+      "A single-row update",
+      "A cache eviction",
+      "A DNS lookup"
+    ],
+    "answer": 1,
+    "explain": "Prepare then commit, with a coordinator. It can block."
+  },
+  {
+    "id": "system-70",
+    "topic": "system",
+    "q": "A lease is safer than a lock without expiry because",
+    "choices": [
+      "The holder must renew it, so a crash releases it",
+      "It never expires",
+      "It needs no storage",
+      "It is a mutex in one process"
+    ],
+    "answer": 1,
+    "explain": "When the lease times out, another worker may take over."
+  },
+  {
+    "id": "system-71",
+    "topic": "system",
+    "q": "Hot key problem means",
+    "choices": [
+      "One key gets a disproportionate share of traffic",
+      "The hash function is secret",
+      "Disks are cold",
+      "Keys are too long"
+    ],
+    "answer": 1,
+    "explain": "You split or cache that key, or the shard melts."
+  },
+  {
+    "id": "system-72",
+    "topic": "system",
+    "q": "Read-your-writes consistency means",
+    "choices": [
+      "A client sees its own recent write",
+      "Every client sees every write instantly",
+      "Writes are batched nightly",
+      "Reads skip the cache"
+    ],
+    "answer": 1,
+    "explain": "Session stickiness or reading from the leader can provide it."
+  },
+  {
+    "id": "system-73",
+    "topic": "system",
+    "q": "Pagination with an offset becomes slow because",
+    "choices": [
+      "The database still walks the skipped rows",
+      "Offsets are O(1)",
+      "Indexes cannot be used",
+      "The page size is the cause always"
+    ],
+    "answer": 1,
+    "explain": "Keyset pagination continues from the last seen key instead."
+  },
+  {
+    "id": "system-74",
+    "topic": "system",
+    "q": "A CDN cache key should include",
+    "choices": [
+      "URL and the parts of the request that change the body",
+      "Only the user's password",
+      "The server hostname always",
+      "Nothing"
+    ],
+    "answer": 1,
+    "explain": "Vary on what changes the response, or users see the wrong body."
+  },
+  {
+    "id": "system-75",
+    "topic": "system",
+    "q": "Graceful degradation means",
+    "choices": [
+      "Serving a simpler response when a dependency fails",
+      "Crashing the process",
+      "Retrying without a limit",
+      "Disabling auth"
+    ],
+    "answer": 1,
+    "explain": "The product stays up with a reduced feature."
+  },
+  {
+    "id": "graph-76",
+    "topic": "graph",
+    "q": "0-1 BFS uses a deque because",
+    "choices": [
+      "Weight 0 goes to the front and weight 1 to the back",
+      "All weights are negative",
+      "It sorts the nodes",
+      "It replaces union-find"
+    ],
+    "answer": 1,
+    "explain": "That keeps nodes in increasing distance without a heap."
+  },
+  {
+    "id": "tree-77",
+    "topic": "tree",
+    "q": "Lowest common ancestor in a BST uses",
+    "choices": [
+      "The split where one node is on each side",
+      "A full in-order list always",
+      "A hash of depths only",
+      "Dijkstra"
+    ],
+    "answer": 1,
+    "explain": "If both keys are smaller, go left; both larger, go right; else you are at the split."
+  },
+  {
+    "id": "dp-78",
+    "topic": "dp",
+    "q": "House robber on a line is",
+    "choices": [
+      "Max of skip this house or take it plus the answer two back",
+      "Always the largest house",
+      "A graph coloring",
+      "A sort"
+    ],
+    "answer": 1,
+    "explain": "Adjacent houses cannot both be chosen."
+  },
+  {
+    "id": "array-79",
+    "topic": "array",
+    "q": "Dutch national flag partitions",
+    "choices": [
+      "Three ranges in one pass",
+      "A linked list",
+      "A heap",
+      "A trie"
+    ],
+    "answer": 1,
+    "explain": "Low, mid, and high pointers group 0s, 1s, and 2s."
+  },
+  {
+    "id": "string-80",
+    "topic": "string",
+    "q": "KMP's failure function",
+    "choices": [
+      "Jumps to the longest proper prefix that is also a suffix",
+      "Hashes the pattern",
+      "Sorts the text",
+      "Builds a suffix array"
+    ],
+    "answer": 1,
+    "explain": "It avoids re-scanning characters you already matched."
+  },
+  {
+    "id": "heap-81",
+    "topic": "heap",
+    "q": "Median of a stream is kept with",
+    "choices": [
+      "A max-heap for the low half and a min-heap for the high half",
+      "One sorted array only",
+      "A queue",
+      "A trie"
+    ],
+    "answer": 1,
+    "explain": "The tops of the two heaps are the middle."
+  },
+  {
+    "id": "graph-82",
+    "topic": "graph",
+    "q": "Kruskal's MST sorts edges and",
+    "choices": [
+      "Adds an edge if it joins different components",
+      "Runs Dijkstra from every node",
+      "Removes the heaviest vertex",
+      "Uses a queue"
+    ],
+    "answer": 1,
+    "explain": "Union-find rejects edges that would cycle."
+  },
+  {
+    "id": "graph-83",
+    "topic": "graph",
+    "q": "Prim's MST grows",
+    "choices": [
+      "One tree by adding the cheapest edge out of it",
+      "Many components at once like Kruskal",
+      "A shortest path tree only",
+      "A random spanning tree"
+    ],
+    "answer": 1,
+    "explain": "A heap picks the next cheapest crossing edge."
+  },
+  {
+    "id": "search-84",
+    "topic": "search",
+    "q": "Exponential search then binary search helps when",
+    "choices": [
+      "The target is near the front of an unbounded sorted array",
+      "The array is unsorted",
+      "You need the maximum",
+      "n is known and tiny"
+    ],
+    "answer": 1,
+    "explain": "You find a window by doubling, then binary search inside it."
+  },
+  {
+    "id": "list-85",
+    "topic": "list",
+    "q": "Merging k sorted lists is",
+    "choices": [
+      "O(N log k) with a heap of the current heads",
+      "O(N + k)",
+      "O(k)",
+      "O(N^2) only"
+    ],
+    "answer": 1,
+    "explain": "N is the total number of nodes. The heap has one node per list."
+  },
+  {
+    "id": "array-86",
+    "topic": "array",
+    "q": "Kadane's algorithm finds",
+    "choices": [
+      "The maximum subarray sum in one pass",
+      "The longest increasing subsequence",
+      "A pair that sums to zero",
+      "The median"
+    ],
+    "answer": 1,
+    "explain": "At each index you extend the current sum or start over."
+  },
+  {
+    "id": "dp-87",
+    "topic": "dp",
+    "q": "Longest increasing subsequence in O(n log n) keeps",
+    "choices": [
+      "The smallest tail of all increasing subsequences of each length",
+      "Every subsequence",
+      "A hash of values",
+      "A stack of indexes only"
+    ],
+    "answer": 1,
+    "explain": "Binary search replaces the tail that the new value can improve."
+  },
+  {
+    "id": "system-88",
+    "topic": "system",
+    "q": "Saga vs two-phase commit: a saga",
+    "choices": [
+      "Uses compensating actions instead of one blocking transaction",
+      "Locks every database until the end",
+      "Needs no failure handling",
+      "Is only for caches"
+    ],
+    "answer": 1,
+    "explain": "Each step has an undo. The system stays available."
+  },
+  {
+    "id": "system-89",
+    "topic": "system",
+    "q": "A dead-letter queue holds",
+    "choices": [
+      "Messages that failed too many times",
+      "The hottest keys",
+      "Successful responses",
+      "Schema migrations"
+    ],
+    "answer": 1,
+    "explain": "Operators can inspect them without blocking the main queue."
+  },
+  {
+    "id": "complexity-90",
+    "topic": "complexity",
+    "q": "Hash table worst-case lookup is",
+    "choices": [
+      "O(n) if every key collides",
+      "O(1) always",
+      "O(log n) always",
+      "O(n log n)"
+    ],
+    "answer": 1,
+    "explain": "Average is O(1); a degenerate hash is a long list."
+  },
+  {
+    "id": "tree-91",
+    "topic": "tree",
+    "q": "A segment tree answers a range sum in",
+    "choices": [
+      "O(log n)",
+      "O(1)",
+      "O(n)",
+      "O(n log n) per query"
+    ],
+    "answer": 1,
+    "explain": "Each query visits O(log n) nodes that cover the range."
+  },
+  {
+    "id": "array-92",
+    "topic": "array",
+    "q": "Difference array updates a range in",
+    "choices": [
+      "O(1) and recovers the array with a prefix sum",
+      "O(n) per update with no later pass",
+      "O(log n) using a hash",
+      "O(n^2)"
+    ],
+    "answer": 1,
+    "explain": "You add at the start and subtract after the end."
+  },
+  {
+    "id": "system-93",
+    "topic": "system",
+    "q": "Tail latency is often fought with",
+    "choices": [
+      "Timeouts, hedging, and smaller fan-out",
+      "Bigger logs only",
+      "More locks",
+      "Synchronous disk on the hot path"
+    ],
+    "answer": 1,
+    "explain": "The slowest call in a fan-out sets the user's wait."
+  },
+  {
+    "id": "graph-94",
+    "topic": "graph",
+    "q": "Bipartite check with BFS",
+    "choices": [
+      "Colors neighbors with the opposite color",
+      "Sorts edges",
+      "Counts degrees only",
+      "Builds an MST"
+    ],
+    "answer": 1,
+    "explain": "A neighbor already colored the same way means an odd cycle."
+  },
+  {
+    "id": "string-95",
+    "topic": "string",
+    "q": "Rolling hash compares substrings in",
+    "choices": [
+      "O(1) after O(n) preprocessing, with a collision risk",
+      "O(n) per compare always",
+      "O(log n) exactly",
+      "O(n^2)"
+    ],
+    "answer": 1,
+    "explain": "Equal hashes are a maybe; you can verify on a hit."
+  },
+  {
+    "id": "array-96",
+    "topic": "array",
+    "q": "Prefix sums answer a range sum in",
+    "choices": [
+      "O(1) after O(n) prep",
+      "O(n) every query with no prep required to be faster",
+      "O(log n) with a hash",
+      "O(n^2)"
+    ],
+    "answer": 1,
+    "explain": "The prefix at r minus the prefix before l is the range."
+  },
+  {
+    "id": "array-97",
+    "topic": "array",
+    "q": "Two sum on an unsorted array is",
+    "choices": [
+      "O(n) expected with a hash map",
+      "O(n log n) only",
+      "O(1)",
+      "O(n^2) is the best"
+    ],
+    "answer": 1,
+    "explain": "One pass stores values already seen."
+  },
+  {
+    "id": "list-98",
+    "topic": "list",
+    "q": "A doubly linked list delete of a known node is",
+    "choices": [
+      "O(1)",
+      "O(n)",
+      "O(log n)",
+      "O(n log n)"
+    ],
+    "answer": 1,
+    "explain": "You relink the neighbors without scanning."
+  },
+  {
+    "id": "stack-99",
+    "topic": "stack",
+    "q": "Min-stack keeps the minimum in",
+    "choices": [
+      "O(1) extra state per push",
+      "A full scan on each get",
+      "A heap of size n only",
+      "A queue"
+    ],
+    "answer": 1,
+    "explain": "Each entry remembers the min at that depth."
+  },
+  {
+    "id": "queue-100",
+    "topic": "queue",
+    "q": "A circular buffer implements a queue in",
+    "choices": [
+      "A fixed array with head and tail",
+      "A balanced tree",
+      "A hash map",
+      "A trie"
+    ],
+    "answer": 1,
+    "explain": "Head and tail indexes wrap around the array."
+  },
+  {
+    "id": "heap-101",
+    "topic": "heap",
+    "q": "Building a heap from n items is",
+    "choices": [
+      "O(n)",
+      "O(n log n) only, never linear",
+      "O(n^2)",
+      "O(log n)"
+    ],
+    "answer": 1,
+    "explain": "Sift-down from the middle sums to linear."
+  },
+  {
+    "id": "tree-102",
+    "topic": "tree",
+    "q": "A complete binary tree of n nodes has height",
+    "choices": [
+      "O(log n)",
+      "O(n)",
+      "O(1)",
+      "O(n log n)"
+    ],
+    "answer": 1,
+    "explain": "Every level but the last is full."
+  },
+  {
+    "id": "tree-103",
+    "topic": "tree",
+    "q": "Red-black and AVL trees both guarantee",
+    "choices": [
+      "O(log n) search",
+      "O(1) search",
+      "O(n) insert",
+      "No rotations"
+    ],
+    "answer": 1,
+    "explain": "They bound the height."
+  },
+  {
+    "id": "graph-104",
+    "topic": "graph",
+    "q": "BFS distance on an unweighted graph is",
+    "choices": [
+      "The number of edges on the shortest path",
+      "The number of vertices",
+      "Always 1",
+      "Undefined"
+    ],
+    "answer": 1,
+    "explain": "The first time you reach a node is the shortest path."
+  },
+  {
+    "id": "graph-105",
+    "topic": "graph",
+    "q": "A DAG has a topological order if",
+    "choices": [
+      "It has no directed cycle",
+      "It is connected",
+      "It is a tree",
+      "It has negative weights"
+    ],
+    "answer": 1,
+    "explain": "A cycle cannot be ordered."
+  },
+  {
+    "id": "sort-106",
+    "topic": "sort",
+    "q": "The lower bound for comparison sorting is",
+    "choices": [
+      "O(n log n)",
+      "O(n)",
+      "O(log n)",
+      "O(n^2)"
+    ],
+    "answer": 1,
+    "explain": "There are n! possible orders and each compare has 2 outcomes."
+  },
+  {
+    "id": "sort-107",
+    "topic": "sort",
+    "q": "Insertion sort is attractive when",
+    "choices": [
+      "The array is small or nearly sorted",
+      "n is a million and random",
+      "You need a stable O(n) worst case",
+      "Keys are floats only"
+    ],
+    "answer": 1,
+    "explain": "Each item slides a short distance."
+  },
+  {
+    "id": "search-108",
+    "topic": "search",
+    "q": "Binary search on 1e9 elements takes about",
+    "choices": [
+      "30 comparisons",
+      "1e9 comparisons",
+      "2 comparisons",
+      "1e6 comparisons"
+    ],
+    "answer": 1,
+    "explain": "log2 of a billion is about 30."
+  },
+  {
+    "id": "dp-109",
+    "topic": "dp",
+    "q": "Memoization is",
+    "choices": [
+      "Recursion plus a cache of results",
+      "A greedy scan",
+      "A sort",
+      "A hash of the input file"
+    ],
+    "answer": 1,
+    "explain": "You compute each state once."
+  },
+  {
+    "id": "dp-110",
+    "topic": "dp",
+    "q": "Unbounded knapsack differs from 0/1 because",
+    "choices": [
+      "An item may be chosen many times",
+      "Weights are negative",
+      "There is no capacity",
+      "Values must be sorted"
+    ],
+    "answer": 1,
+    "explain": "The inner loop walks forward so the same item can be reused."
+  },
+  {
+    "id": "greedy-111",
+    "topic": "greedy",
+    "q": "Huffman coding is greedy because",
+    "choices": [
+      "You always merge the two lightest nodes",
+      "You sort the text",
+      "You hash characters",
+      "You build a trie of words"
+    ],
+    "answer": 1,
+    "explain": "That merge is the cheapest next step and is optimal."
+  },
+  {
+    "id": "interval-112",
+    "topic": "interval",
+    "q": "Minimum platforms for trains is like",
+    "choices": [
+      "A sweep of arrivals and departures",
+      "A shortest path",
+      "A union-find on names",
+      "A binary search on IDs only"
+    ],
+    "answer": 1,
+    "explain": "The max of the running count is the answer."
+  },
+  {
+    "id": "string-113",
+    "topic": "string",
+    "q": "An anagram check of two strings is",
+    "choices": [
+      "Sort both, or count characters",
+      "A nested search only",
+      "A graph",
+      "A heap"
+    ],
+    "answer": 1,
+    "explain": "Equal counts mean the same multiset of characters."
+  },
+  {
+    "id": "hash-114",
+    "topic": "hash",
+    "q": "Load factor is",
+    "choices": [
+      "Entries divided by buckets",
+      "Collisions divided by n squared",
+      "The hash seed",
+      "The key length"
+    ],
+    "answer": 1,
+    "explain": "Past a threshold you resize."
+  },
+  {
+    "id": "system-115",
+    "topic": "system",
+    "q": "A primary key index is usually",
+    "choices": [
+      "A unique lookup structure on the row id",
+      "A full copy of the logs",
+      "Optional and unused",
+      "A bloom filter only"
+    ],
+    "answer": 1,
+    "explain": "It finds one row by its id."
+  },
+  {
+    "id": "system-116",
+    "topic": "system",
+    "q": "Connection pooling exists to",
+    "choices": [
+      "Reuse expensive connections",
+      "Encrypt each query twice",
+      "Sort result rows",
+      "Replace indexes"
+    ],
+    "answer": 1,
+    "explain": "Opening a connection is slower than borrowing one."
+  },
+  {
+    "id": "system-117",
+    "topic": "system",
+    "q": "A timeout budget should",
+    "choices": [
+      "Shrink as a request passes through services",
+      "Reset to the original at every hop",
+      "Be infinite",
+      "Be one millisecond always"
+    ],
+    "answer": 1,
+    "explain": "Otherwise the user waits for the sum of every timeout."
+  },
+  {
+    "id": "system-118",
+    "topic": "system",
+    "q": "Exactly-once delivery in practice is",
+    "choices": [
+      "At-least-once plus idempotent consumers",
+      "A promise from the network",
+      "Impossible to approximate",
+      "UDP with no checks"
+    ],
+    "answer": 1,
+    "explain": "The consumer dedupes retries."
+  },
+  {
+    "id": "system-119",
+    "topic": "system",
+    "q": "A compaction in an LSM tree",
+    "choices": [
+      "Merges sorted runs and drops overwritten keys",
+      "Sorts the WAL only",
+      "Rebuilds the schema",
+      "Flushes the cache to the client"
+    ],
+    "answer": 1,
+    "explain": "Reads then touch fewer runs."
+  },
+  {
+    "id": "complexity-120",
+    "topic": "complexity",
+    "q": "O(n) extra space for merge sort comes from",
+    "choices": [
+      "The temporary arrays used while merging",
+      "The recursion only, which is O(1)",
+      "The input itself being copied n times per element",
+      "A hash of all pairs"
+    ],
+    "answer": 1,
+    "explain": "Merging two halves needs a buffer."
+  },
+  {
+    "id": "list-121",
+    "topic": "list",
+    "q": "Detecting a palindrome list in O(1) space",
+    "choices": [
+      "Reverses the second half and compares",
+      "Copies the list to an array only",
+      "Uses a hash of nodes",
+      "Sorts the values"
+    ],
+    "answer": 1,
+    "explain": "You restore the half afterward if you must."
+  },
+  {
+    "id": "stack-122",
+    "topic": "stack",
+    "q": "A queue from two stacks costs",
+    "choices": [
+      "Amortized O(1) per operation",
+      "O(n) every time",
+      "O(log n)",
+      "O(n^2)"
+    ],
+    "answer": 1,
+    "explain": "You pour one stack into the other only when the outbox is empty."
+  },
+  {
+    "id": "tree-123",
+    "topic": "tree",
+    "q": "Level-order traversal uses",
+    "choices": [
+      "A queue",
+      "A stack only",
+      "Recursion with no extra memory ever",
+      "A heap of values"
+    ],
+    "answer": 1,
+    "explain": "FIFO keeps the current level together."
+  },
+  {
+    "id": "graph-124",
+    "topic": "graph",
+    "q": "Floyd-Warshall is",
+    "choices": [
+      "O(n^3) all-pairs shortest paths",
+      "O(n log n)",
+      "A spanning tree algorithm",
+      "Only for unweighted graphs"
+    ],
+    "answer": 1,
+    "explain": "Every pair of vertices is relaxed through every intermediate."
+  },
+  {
+    "id": "array-125",
+    "topic": "array",
+    "q": "Reservoir sampling picks k items from a stream",
+    "choices": [
+      "Each item equally likely, in one pass",
+      "The first k only",
+      "The last k only",
+      "With O(n) memory always"
+    ],
+    "answer": 1,
+    "explain": "Item i replaces a slot with probability k/i."
+  },
+  {
+    "id": "system-126",
+    "topic": "system",
+    "q": "A gossip protocol spreads state by",
+    "choices": [
+      "Random peers exchanging what they know",
+      "A single leader push to everyone always",
+      "A shared disk",
+      "Two-phase commit"
+    ],
+    "answer": 1,
+    "explain": "It converges without a central coordinator."
+  },
+  {
+    "id": "system-127",
+    "topic": "system",
+    "q": "Blue-green deploy means",
+    "choices": [
+      "Two full environments, and you switch traffic",
+      "Restarting one process",
+      "A database migration only",
+      "A feature flag in the client"
+    ],
+    "answer": 1,
+    "explain": "The idle color becomes live when it is healthy."
+  },
+  {
+    "id": "system-128",
+    "topic": "system",
+    "q": "A canary release",
+    "choices": [
+      "Sends a little traffic to the new version first",
+      "Replaces every server at once",
+      "Skips tests",
+      "Disables monitoring"
+    ],
+    "answer": 1,
+    "explain": "You watch errors before the full shift."
+  },
+  {
+    "id": "dp-129",
+    "topic": "dp",
+    "q": "Coin change (fewest coins) is",
+    "choices": [
+      "Unbounded knapsack on the amount",
+      "A sort of the coins",
+      "A graph of users",
+      "A binary search only"
+    ],
+    "answer": 1,
+    "explain": "Each amount stores the best count, and coins can repeat."
+  },
+  {
+    "id": "search-130",
+    "topic": "search",
+    "q": "A rotated sorted array is searched by",
+    "choices": [
+      "Binary search that first finds which half is sorted",
+      "A linear scan only",
+      "A hash of every rotation",
+      "Building a new array first, which is required"
+    ],
+    "answer": 1,
+    "explain": "One half is always sorted, so you know where the target can sit."
+  },
+  {
+    "id": "string-131",
+    "topic": "string",
+    "q": "Manacher's algorithm finds",
+    "choices": [
+      "Longest palindromic substring in linear time",
+      "Edit distance",
+      "Anagrams",
+      "A suffix array"
+    ],
+    "answer": 1,
+    "explain": "It expands around centers with previously computed radii."
+  },
+  {
+    "id": "heap-132",
+    "topic": "heap",
+    "q": "A k-way merge of sorted arrays uses",
+    "choices": [
+      "A heap of the current head of each array",
+      "One pointer and no extra memory",
+      "A queue of all values",
+      "A trie"
+    ],
+    "answer": 1,
+    "explain": "The heap tells you which array has the next smallest."
+  },
+  {
+    "id": "graph-133",
+    "topic": "graph",
+    "q": "Articulation points are",
+    "choices": [
+      "Vertices whose removal disconnects the graph",
+      "Leaves of a tree only",
+      "Nodes with degree 2",
+      "The roots of a trie"
+    ],
+    "answer": 1,
+    "explain": "DFS discovery times and low links find them."
+  },
+  {
+    "id": "system-134",
+    "topic": "system",
+    "q": "Row vs document store: a document store fits when",
+    "choices": [
+      "Records are self-contained and shaped differently",
+      "You need many joins on normalized tables",
+      "You need strict foreign keys everywhere",
+      "The data is a single integer"
+    ],
+    "answer": 1,
+    "explain": "Each document carries the fields that read needs."
+  },
+  {
+    "id": "system-135",
+    "topic": "system",
+    "q": "A vector clock tracks",
+    "choices": [
+      "Which replica has seen which writes",
+      "Wall-clock skew only",
+      "CPU load",
+      "Cache size"
+    ],
+    "answer": 1,
+    "explain": "Comparing clocks tells you if two versions are ordered or concurrent."
+  },
+  {
+    "id": "complexity-136",
+    "topic": "complexity",
+    "q": "Master theorem case T(n)=2T(n/2)+O(n) is",
+    "choices": [
+      "O(n log n)",
+      "O(n)",
+      "O(n^2)",
+      "O(log n)"
+    ],
+    "answer": 1,
+    "explain": "The work per level is O(n) and there are log n levels."
+  },
+  {
+    "id": "array-137",
+    "topic": "array",
+    "q": "Moore's voting algorithm finds",
+    "choices": [
+      "A majority element in one pass and O(1) space",
+      "The median of unsorted data exactly",
+      "All duplicates",
+      "The mode of every value"
+    ],
+    "answer": 1,
+    "explain": "A candidate survives only if it appears more than half the time."
+  },
+  {
+    "id": "tree-138",
+    "topic": "tree",
+    "q": "Serialize a BST with preorder and",
+    "choices": [
+      "The BST property reconstructs it without null markers",
+      "You must store every null",
+      "You need the inorder array too",
+      "You hash the nodes"
+    ],
+    "answer": 1,
+    "explain": "Inserting preorder values back into an empty BST restores the shape."
+  },
+  {
+    "id": "system-139",
+    "topic": "system",
+    "q": "Poison-pill shutdown of a worker pool is",
+    "choices": [
+      "A sentinel value on the queue that tells a worker to exit",
+      "Killing the process",
+      "A timeout of zero",
+      "A full disk"
+    ],
+    "answer": 1,
+    "explain": "The worker finishes its current job, sees the sentinel, and stops."
+  },
+  {
+    "id": "graph-140",
+    "topic": "graph",
+    "q": "Aho-Corasick matches",
+    "choices": [
+      "Many patterns in a text in one pass",
+      "One pattern only, like a naive scan",
+      "A shortest path",
+      "A spanning tree"
+    ],
+    "answer": 1,
+    "explain": "The trie plus failure links reports every match."
+  },
+  {
+    "id": "system-141",
+    "topic": "system",
+    "q": "Read repair in a replicated store",
+    "choices": [
+      "Fixes a stale replica when a read notices it",
+      "Deletes the key",
+      "Skips the quorum",
+      "Compacts the log"
+    ],
+    "answer": 1,
+    "explain": "The coordinator writes the newest value back."
+  },
+  {
+    "id": "dp-142",
+    "topic": "dp",
+    "q": "Matrix chain multiplication decides",
+    "choices": [
+      "Where to parenthesize multiplications",
+      "How to invert a matrix",
+      "The determinant",
+      "A shortest path in a grid of 1s"
+    ],
+    "answer": 1,
+    "explain": "The table stores the cheapest split of each subchain."
+  },
+  {
+    "id": "list-143",
+    "topic": "list",
+    "q": "Copy a list with random pointers by",
+    "choices": [
+      "Weaving cloned nodes between originals, or using a map",
+      "Sorting the nodes",
+      "A binary search",
+      "Reversing twice only"
+    ],
+    "answer": 1,
+    "explain": "The interleaved clone can find its random pointer's clone next door."
+  },
+  {
+    "id": "system-144",
+    "topic": "system",
+    "q": "A watermark in a streaming system is",
+    "choices": [
+      "A promise that no earlier event will arrive",
+      "The disk usage",
+      "A cache header",
+      "The leader's term"
+    ],
+    "answer": 1,
+    "explain": "Operators past the watermark can close."
+  },
+  {
+    "id": "search-145",
+    "topic": "search",
+    "q": "Ternary search on a unimodal function",
+    "choices": [
+      "Splits the range into thirds and drops the worse side",
+      "Needs a sorted array of the answers",
+      "Is a graph search",
+      "Uses a hash"
+    ],
+    "answer": 1,
+    "explain": "Two probes tell you which third cannot hold the maximum."
+  },
+  {
+    "id": "system-146",
+    "topic": "system",
+    "q": "Split brain is",
+    "choices": [
+      "Two sides both believing they are the leader",
+      "A full disk",
+      "A slow query",
+      "A cache miss"
+    ],
+    "answer": 1,
+    "explain": "Fencing tokens or a quorum stop a stale leader from writing."
+  }
+]

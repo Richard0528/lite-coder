@@ -1,0 +1,82 @@
+[
+  {
+    "round": "explain",
+    "slug": "explain-two-pointers",
+    "title": "Explain: opposite pointers",
+    "difficulty": "Easy",
+    "language": "python",
+    "content_md": "Read the function and explain what it returns, why the pointers move, and the complexity.\n",
+    "expected_points": ["Sorted array, find if two values sum to target.", "Move the pointer on the side that makes the sum too big or too small.", "O(n) time, O(1) extra space.", "Fails if the array is not sorted."],
+    "code": "def has_pair(nums, target):\n    lo, hi = 0, len(nums) - 1\n    while lo < hi:\n        total = nums[lo] + nums[hi]\n        if total == target:\n            return True\n        if total < target:\n            lo += 1\n        else:\n            hi -= 1\n    return False\n"
+  },
+  {
+    "round": "explain",
+    "slug": "explain-binary-search",
+    "title": "Explain: half the range",
+    "difficulty": "Easy",
+    "language": "python",
+    "content_md": "Explain the loop, the return value, and what happens when the value is missing.\n",
+    "expected_points": ["Finds target in a sorted array.", "Each step discards half the range.", "O(log n) time.", "Returns -1 when lo passes hi."],
+    "code": "def locate(nums, target):\n    lo, hi = 0, len(nums) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if nums[mid] == target:\n            return mid\n        if nums[mid] < target:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\n"
+  },
+  {
+    "round": "explain",
+    "slug": "explain-dfs",
+    "title": "Explain: depth-first count",
+    "difficulty": "Medium",
+    "language": "python",
+    "content_md": "Explain what the nested function counts and why `seen` is needed.\n",
+    "expected_points": ["Counts nodes reachable from start in an undirected graph.", "seen prevents infinite recursion on cycles.", "O(V + E) time."],
+    "code": "def reachable(graph, start):\n    seen = set()\n    def walk(node):\n        if node in seen:\n            return 0\n        seen.add(node)\n        total = 1\n        for nxt in graph.get(node, []):\n            total += walk(nxt)\n        return total\n    return walk(start)\n"
+  },
+  {
+    "round": "explain",
+    "slug": "explain-heap",
+    "title": "Explain: top k",
+    "difficulty": "Medium",
+    "language": "python",
+    "content_md": "Explain which values stay in the heap and the complexity.\n",
+    "expected_points": ["Returns the k largest values, not sorted.", "Min-heap of size k.", "O(n log k) time."],
+    "code": "import heapq\n\ndef top_k(nums, k):\n    heap = []\n    for n in nums:\n        if len(heap) < k:\n            heapq.heappush(heap, n)\n        elif n > heap[0]:\n            heapq.heapreplace(heap, n)\n    return heap\n"
+  },
+  {
+    "round": "explain",
+    "slug": "explain-window",
+    "title": "Explain: shrinking window",
+    "difficulty": "Medium",
+    "language": "javascript",
+    "content_md": "Explain what the function returns and when `left` moves.\n",
+    "expected_points": ["Longest substring without a repeated character.", "left jumps past the previous copy of the current character.", "O(n) time with a map of last indexes."],
+    "code": "function longestUnique(s) {\n  let best = 0;\n  let left = 0;\n  const last = new Map();\n  for (let right = 0; right < s.length; right++) {\n    const ch = s[right];\n    if (last.has(ch) && last.get(ch) >= left) left = last.get(ch) + 1;\n    last.set(ch, right);\n    best = Math.max(best, right - left + 1);\n  }\n  return best;\n}\n"
+  },
+  {
+    "round": "explain",
+    "slug": "explain-union",
+    "title": "Explain: union by parent",
+    "difficulty": "Medium",
+    "language": "python",
+    "content_md": "Explain `find` and what `unite` returns.\n",
+    "expected_points": ["Disjoint-set with path compression.", "unite returns false when both nodes were already connected.", "Nearly O(1) per operation."],
+    "code": "class Union:\n    def __init__(self, n):\n        self.parent = list(range(n))\n    def find(self, x):\n        while self.parent[x] != x:\n            self.parent[x] = self.parent[self.parent[x]]\n            x = self.parent[x]\n        return x\n    def unite(self, a, b):\n        ra, rb = self.find(a), self.find(b)\n        if ra == rb:\n            return False\n        self.parent[ra] = rb\n        return True\n"
+  },
+  {
+    "round": "explain",
+    "slug": "explain-dp",
+    "title": "Explain: one-row recurrence",
+    "difficulty": "Medium",
+    "language": "python",
+    "content_md": "Explain the meaning of `best[i]` and why the loop walks backward.\n",
+    "expected_points": ["0/1 knapsack: max value with capacity cap.", "best[w] is the best value using capacity w.", "Backward loop so each item is used once.", "O(n * cap) time, O(cap) space."],
+    "code": "def knapsack(weights, values, cap):\n    best = [0] * (cap + 1)\n    for w, v in zip(weights, values):\n        for room in range(cap, w - 1, -1):\n            best[room] = max(best[room], best[room - w] + v)\n    return best[cap]\n"
+  },
+  {
+    "round": "explain",
+    "slug": "explain-trie",
+    "title": "Explain: prefix tree",
+    "difficulty": "Medium",
+    "language": "python",
+    "content_md": "Explain what `add` stores and what `has_prefix` answers.\n",
+    "expected_points": ["Each edge is one character.", "end marks a complete word.", "has_prefix is true for a prefix even if that prefix is not a stored word.", "Lookup is O(length)."],
+    "code": "class Trie:\n    def __init__(self):\n        self.children = {}\n        self.end = False\n    def add(self, word):\n        node = self\n        for ch in word:\n            node = node.children.setdefault(ch, Trie())\n        node.end = True\n    def has_prefix(self, text):\n        node = self\n        for ch in text:\n            if ch not in node.children:\n                return False\n            node = node.children[ch]\n        return True\n"
+  }
+]

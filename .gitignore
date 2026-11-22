@@ -3,6 +3,7 @@ build*/
 lhelper/
 submodules/
 subprojects/*/
+subprojects/.wraplock
 !subprojects/packagefiles/
 /appimage*
 .vscode
@@ -19,6 +20,7 @@ subprojects/*/
 *App*
 compile_commands.json
 error.txt
+data/plugins/prep/bank/
 lite-xl*
 LiteXL*
 

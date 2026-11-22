@@ -1,0 +1,68 @@
+[
+  {
+    "round": "coding",
+    "slug": "pair-sum",
+    "title": "Pair Sum",
+    "difficulty": "Easy",
+    "frontend_id": 1,
+    "content_md": "Given an array of integers `nums` and an integer `target`, return the indexes of the two values that add up to `target`. Each input has exactly one answer, and you may not use the same index twice. Aim for better than a nested loop.\n",
+    "hints": ["A map from value to index lets you look up the complement as you scan."],
+    "examples": "[2,7,11,15]\n9\n[3,2,4]\n6\n",
+    "meta": {
+      "name": "twoSum",
+      "params": [
+        {"name": "nums", "type": "integer[]"},
+        {"name": "target", "type": "integer"}
+      ],
+      "return": {"type": "integer[]"}
+    },
+    "templates": {
+      "python3": "class Solution:\n    def twoSum(self, nums, target):\n        pass\n",
+      "javascript": "var twoSum = function(nums, target) {\n  \n};\n"
+    },
+    "tags": ["Array", "Hash Table"],
+    "source": "curated"
+  },
+  {
+    "round": "coding",
+    "slug": "balanced-brackets",
+    "title": "Balanced Brackets",
+    "difficulty": "Easy",
+    "frontend_id": 2,
+    "content_md": "A string contains the brackets `()`, `[]`, and `{}`. Return true when every opener is closed by the matching closer, in the right order.\n",
+    "hints": ["A stack of openers is enough. The closer must match the most recent opener."],
+    "examples": "\"()\"\n\"()[]{}\"\n\"(]\"\n",
+    "meta": {
+      "name": "isValid",
+      "params": [{"name": "s", "type": "string"}],
+      "return": {"type": "boolean"}
+    },
+    "templates": {
+      "python3": "class Solution:\n    def isValid(self, s):\n        pass\n",
+      "javascript": "var isValid = function(s) {\n  \n};\n"
+    },
+    "tags": ["Stack", "String"],
+    "source": "curated"
+  },
+  {
+    "round": "coding",
+    "slug": "reverse-chain",
+    "title": "Reverse a Chain",
+    "difficulty": "Easy",
+    "frontend_id": 3,
+    "content_md": "Reverse a singly linked list of `ListNode` values and return the new head. Do it in place.\n",
+    "hints": ["Keep previous, current, and next. Advance current only after you have saved next."],
+    "examples": "[1,2,3]\n[]\n[1]\n",
+    "meta": {
+      "name": "reverseList",
+      "params": [{"name": "head", "type": "ListNode"}],
+      "return": {"type": "ListNode"}
+    },
+    "templates": {
+      "python3": "class Solution:\n    def reverseList(self, head):\n        pass\n",
+      "javascript": "var reverseList = function(head) {\n  \n};\n"
+    },
+    "tags": ["Linked List"],
+    "source": "curated"
+  }
+]
